@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
+import logo from '../assets/images/YourServiceMate_Logo.png'; 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -10,12 +10,11 @@ const Navbar = () => {
     <header className="sticky top-0 z-50 w-full border-b bg-white dark:bg-gray-900 md:px-3">
       <div className="w-full px-4 sm:px-0 sm:w-full">
         <div className="flex h-16 items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="text-xl sm:text-2xl font-bold text-blue-600">
+          <Link to="/" className="text-xl sm:text-2xl font-bold text-blue-600 flex items-center">
+          <img className="w-16" src={logo} alt="" />
             Your Service Mate
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-6">
             <Link
               to="/services"

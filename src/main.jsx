@@ -9,7 +9,6 @@ import {
 import AuthProvider from './Providers/AuthProvider.jsx';
 import Layout from './Layout/Layout';
 import Home from './Components/Home.jsx';
-import Footer from './Components/Footer.jsx';
 import Login from './Components/Login.jsx';
 import Register from './Components/Register.jsx';
 
