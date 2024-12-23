@@ -14,6 +14,7 @@ import AddService from "./Components/AddService";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import AllService from "./Components/AllService";
 import ServiceDetails from "./Components/ServiceDetails";
+import BookingServices from "./Components/BookingServices";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const router = createBrowserRouter([
       { path: "/allServices", element: <AllService /> },
       { path: "/addService", element: <PrivateRoute><AddService /></PrivateRoute> },
       { path: "/details/:id", element: <PrivateRoute><ServiceDetails /></PrivateRoute> },
+      { path: "/bookedServices", element: <PrivateRoute><BookingServices /></PrivateRoute> },
     ],
   },
 ]);

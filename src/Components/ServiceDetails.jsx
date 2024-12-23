@@ -93,7 +93,7 @@ const ServiceDetails = () => {
         <img
           src={service.imageUrl}
           alt={service.name}
-          className="w-full h-[400px] object-cover rounded-lg"
+          className="w-full h-[400px] md:h-[600px] object-cover rounded-lg"
         />
         <h2 className="text-3xl font-semibold mt-4 text-blue-700">{service.name}</h2>
         <p className="mt-2 text-gray-700">{service.description}</p>
@@ -101,7 +101,7 @@ const ServiceDetails = () => {
           <img
             src={service.providerImage}
             alt={service.providerName}
-            className="w-12 h-12 rounded-full border-2 border-blue-950 mr-3"
+            className="w-12 h-12 rounded-full object-cover object-center border-2 border-blue-950 mr-3"
           />
           <div>
             <p className="text-xl font-semibold text-gray-900">{service.providerName}</p>
