@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 const fetchServices = async () => {
   const response = await fetch('http://localhost:5000/allServices');
@@ -17,6 +18,7 @@ const AllService = () => {
   });
 
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-screen text-lg font-semibold text-gray-500">Loading...</div>;
@@ -63,7 +65,10 @@ const AllService = () => {
                   : service.description}
               </p>
               <div className="text-center mb-6">
-                <button className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-700 hover:shadow-md transition">
+                <button
+                  className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-sm hover:bg-blue-700 hover:shadow-md transition"
+                  onClick={() => navigate(`/details/${service._id}`)}
+                >
                   View Detail
                 </button>
               </div>

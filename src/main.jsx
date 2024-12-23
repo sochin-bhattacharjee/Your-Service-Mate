@@ -13,6 +13,7 @@ import AuthProvider from "./provider/AuthProvider";
 import AddService from "./Components/AddService";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import AllService from "./Components/AllService";
+import ServiceDetails from "./Components/ServiceDetails";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "/register", element: <Register /> },
       { path: "/allServices", element: <AllService /> },
       { path: "/addService", element: <PrivateRoute><AddService /></PrivateRoute> },
+      { path: "/details/:id", element: <PrivateRoute><ServiceDetails /></PrivateRoute> },
     ],
   },
 ]);
