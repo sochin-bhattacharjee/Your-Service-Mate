@@ -16,14 +16,13 @@ const AddService = () => {
     reset,
   } = useForm();
 
-  // Refresh data after service addition
   const { refetch } = useQuery({
     queryKey: ["addService"],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:5000/services"); // Replace with correct endpoint
+      const response = await axios.get("http://localhost:5000/services");
       return response.data;
     },
-    enabled: false, // Manual trigger
+    enabled: false,
   });
 
   const onSubmit = async (data) => {
@@ -41,18 +40,17 @@ const AddService = () => {
       );
 
       if (response.status === 200 || response.status === 201) {
-        // Successful addition
+
         Swal.fire({
           title: "Success!",
           text: "Service has been added successfully.",
           icon: "success",
         }).then(() => {
-          reset(); // Reset form
-          refetch(); // Refresh data
-          navigate("/allServices"); // Navigate to All Services
+          reset();
+          refetch();
+          navigate("/allServices");
         });
       } else {
-        // Handle unexpected status codes
         console.error("Unexpected response:", response);
         Swal.fire({
           title: "Error!",
@@ -62,7 +60,6 @@ const AddService = () => {
       }
     } catch (error) {
       if (error.response) {
-        // Backend error
         console.error("Error from backend:", error.response);
         Swal.fire({
           title: "Error!",
@@ -70,7 +67,6 @@ const AddService = () => {
           icon: "error",
         });
       } else {
-        // Network or other errors
         console.error("Error during request:", error);
         Swal.fire({
           title: "Error!",
