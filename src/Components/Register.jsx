@@ -1,126 +1,230 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useTheme } from "../context/ThemeContext";
+import { AuthContext } from "../provider/AuthProvider";
+import { FaArrowRight } from "react-icons/fa";
+import { Label } from "@radix-ui/react-label";
+import { GrGoogle } from "react-icons/gr";
+import Swal from "sweetalert2";
+import { updateProfile } from "firebase/auth";
+
 
 const Register = () => {
-  const handleRegister = (event) => {
-    event.preventDefault();
-    const formData = new FormData(event.target);
-    const name = formData.get("name");
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const photoURL = formData.get("photoURL");
-
-    console.log({ name, email, password, photoURL });
-  };
+  const { theme } = useTheme();
+  const { createUser, signInWithGoogle } = useContext(AuthContext);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const navigate = useNavigate();
 
   const handleGoogleSignIn = () => {
-    console.log("Google Sign-In clicked");
+    signInWithGoogle()
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Registration Successful",
+          text: "Welcome to our platform!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Google Sign-in Failed",
+          text: error.message,
+        });
+      });
   };
 
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const photoURL = e.target.photoURL.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+  
+    const hasLowerCase = /[a-z]/.test(password);
+    const hasUpperCase = /[A-Z]/.test(password);
+    const hasNumber = /[0-9]/.test(password);
+    const hasValidLength = password.length >= 6;
+  
+    if (!hasLowerCase) {
+      setPasswordError("Password must contain at least one lowercase letter (a-z).");
+      return;
+    }
+    if (!hasUpperCase) {
+      setPasswordError("Password must contain at least one uppercase letter (A-Z).");
+      return;
+    }
+    if (!hasNumber) {
+      setPasswordError("Password must contain at least one number (0-9).");
+      return;
+    }
+    if (!hasValidLength) {
+      setPasswordError("Password must be at least 6 characters long.");
+      return;
+    }
+  
+    setPasswordError("");
+  
+    createUser(email, password)
+      .then((result) => {
+        const createdUser = result.user;
+        return updateProfile(createdUser, {
+          displayName: name,
+          photoURL: photoURL,
+        });
+      })
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Registration Successful",
+          text: "Welcome to our platform!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Registration Failed",
+          text: error.message,
+        });
+      });
+  };
+  
+
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-blue-600">Register</h2>
-        <form onSubmit={handleRegister} className="mt-6 space-y-4">
+    <div
+      className={`w-11/12 md:w-8/12 lg:w-6/12 mx-auto rounded-xl p-6 shadow-lg mt-20 transition-transform duration-300 ease-in-out ${
+        theme === "dark" 
+          ? "bg-gradient-to-r from-gray-800 to-gray-900 text-white" 
+          : "bg-gradient-to-r from-gray-200 to-gray-300 text-black"
+      }`}
+    >
+      <h2 className="font-bold text-3xl text-center mb-4">Register</h2>
+      <p className="text-sm text-center mt-2 mb-6">Create an account to continue.</p>
 
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              placeholder="Enter your name"
-              required
-            />
-          </div>
+      <form className="mt-6" onSubmit={handleRegister}>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="name" className="font-semibold">Full Name</Label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            required
+            placeholder="Enter your full name"
+            className={`w-full px-4 py-2 rounded-md border-2 focus:outline-none transition-all duration-300 ease-in-out ${
+              theme === "dark"
+                ? "bg-gray-800 text-white border-gray-700 focus:ring-2 focus:ring-blue-500"
+                : "bg-gray-50 text-black border-gray-300 focus:ring-2 focus:ring-blue-500"
+            }`}
+          />
+        </LabelInputContainer>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="photoURL" className="font-semibold">Photo URL</Label>
+          <input
+            id="photoURL"
+            name="photoURL"
+            type="text"
+            required
+            placeholder="Enter your photo URL"
+            className={`w-full px-4 py-2 rounded-md border-2 focus:outline-none transition-all duration-300 ease-in-out ${
+              theme === "dark"
+                ? "bg-gray-800 text-white border-gray-700 focus:ring-2 focus:ring-blue-500"
+                : "bg-gray-50 text-black border-gray-300 focus:ring-2 focus:ring-blue-500"
+            }`}
+          />
+        </LabelInputContainer>
 
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="email" className="font-semibold">Email Address</Label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            placeholder="Enter your email"
+            className={`w-full px-4 py-2 rounded-md border-2 focus:outline-none transition-all duration-300 ease-in-out ${
+              theme === "dark"
+                ? "bg-gray-800 text-white border-gray-700 focus:ring-2 focus:ring-blue-500"
+                : "bg-gray-50 text-black border-gray-300 focus:ring-2 focus:ring-blue-500"
+            }`}
+          />
+        </LabelInputContainer>
+
+        <LabelInputContainer className="mb-4">
+          <Label htmlFor="password" className="font-semibold">Password</Label>
+          <div className="relative">
             <input
-              type="password"
               id="password"
               name="password"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              placeholder="Enter your password"
+              type={showPassword ? "text" : "password"}
               required
+              placeholder="Enter your password"
+              className={`w-full px-4 py-2 rounded-md border-2 focus:outline-none transition-all duration-300 ease-in-out ${
+                theme === "dark"
+                  ? "bg-gray-800 text-white border-gray-700 focus:ring-2 focus:ring-blue-500"
+                  : "bg-gray-50 text-black border-gray-300 focus:ring-2 focus:ring-blue-500"
+              }`}
             />
+            <button
+              type="button"
+              className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
           </div>
+        </LabelInputContainer>
 
-          <div>
-            <label htmlFor="photoURL" className="block text-sm font-medium text-gray-700">
-              Photo URL
-            </label>
-            <input
-              type="url"
-              id="photoURL"
-              name="photoURL"
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-              placeholder="Enter your photo URL"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-          >
-            Register
-          </button>
-        </form>
-
-        <div className="mt-6 flex items-center">
-          <div className="w-full border-t border-gray-300"></div>
-          <span className="mx-4 text-gray-500">OR</span>
-          <div className="w-full border-t border-gray-300"></div>
-        </div>
+        {passwordError && (
+          <p className="text-red-500 text-sm mt-2">{passwordError}</p>
+        )}
 
         <button
-          onClick={handleGoogleSignIn}
-          className="mt-6 w-full flex items-center justify-center bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+          type="submit"
+          className={`w-full flex items-center justify-center gap-2 py-2 rounded-md text-white font-semibold focus:outline-none transition-all duration-300 ease-in-out ${
+            theme === "dark"
+              ? "bg-blue-700 hover:bg-blue-600"
+              : "bg-blue-500 hover:bg-blue-400"
+          }`}
         >
-          <svg
-            className="w-5 h-5 mr-2"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 48 48"
-          >
-            <path
-              fill="#EA4335"
-              d="M24 9.5c3.69 0 6.85 1.26 9.42 3.35l7-6.85C36.47 2.54 30.74 0 24 0 14.85 0 6.9 5.45 2.65 13.4l7.93 6.2C12.85 12.2 18.01 9.5 24 9.5z"
-            />
-            <path
-              fill="#34A853"
-              d="M46.34 24.56c0-1.64-.16-3.21-.45-4.73H24v9.13h12.74c-.55 2.83-2.22 5.22-4.71 6.87v5.68h7.63c4.46-4.11 6.97-10.15 6.97-17.22z"
-            />
-            <path
-              fill="#FBBC05"
-              d="M10.58 28.4c-1.35-4.03-1.35-8.37 0-12.4V10.2H2.65C-.88 16.64-.88 24.34 2.65 30.8l7.93-6.2z"
-            />
-            <path
-              fill="#4285F4"
-              d="M24 48c6.74 0 12.47-2.2 16.63-5.98l-7.63-5.68c-2.22 1.49-5.07 2.38-9 2.38-5.98 0-11.14-2.7-14.42-7.05l-7.93 6.2C6.9 42.55 14.85 48 24 48z"
-            />
-          </svg>
-          Continue with Google
+          Register <FaArrowRight />
         </button>
-      </div>
+
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          className="flex items-center justify-center gap-3 mt-4 border-2 border-gray-300 rounded-md p-2 w-full hover:border-blue-500 transition-all duration-300 ease-in-out"
+        >
+          <span className="text-xl"><GrGoogle /></span> Register with Google
+        </button>
+
+        <p className="mt-6 text-center">
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            className="text-blue-500 hover:text-blue-600 hover:underline"
+          >
+            Login
+          </Link>
+        </p>
+      </form>
     </div>
+  );
+};
+
+const LabelInputContainer = ({ children, className }) => {
+  return (
+    <div className={`flex flex-col space-y-2 ${className}`}>{children}</div>
   );
 };
 
