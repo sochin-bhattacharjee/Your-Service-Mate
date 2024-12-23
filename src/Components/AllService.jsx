@@ -13,7 +13,7 @@ const fetchServices = async () => {
 const AllService = () => {
   const { data: services, isError, isLoading, error } = useQuery({
     queryKey: ['services'],
-    queryFn: fetchServices
+    queryFn: fetchServices,
   });
 
   if (isLoading) {
@@ -21,20 +21,26 @@ const AllService = () => {
   }
 
   if (isError) {
-    Swal.fire("Error!", error.message, "error");
+    Swal.fire('Error!', error.message, 'error');
     return <div>Error: {error.message}</div>;
   }
 
   return (
     <div className="container mx-auto p-8">
       <h2 className="text-2xl font-bold text-center mb-6">All Services</h2>
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-8">
         {services.map((service) => (
           <div key={service._id} className="bg-white p-6 rounded-lg shadow-md">
-            <img src={service.imageUrl} alt={service.name} className="w-full h-48 object-cover rounded-md mb-4" />
+            <img
+              src={service.imageUrl}
+              alt={service.name}
+              className="w-full h-48 object-cover rounded-md mb-4"
+            />
             <h3 className="text-xl font-semibold mb-2">{service.name}</h3>
             <p className="text-gray-600 text-sm mb-2">
-              {service.description.length > 100 ? `${service.description.slice(0, 100)}...` : service.description}
+              {service.description.length > 100
+                ? `${service.description.slice(0, 100)}...`
+                : service.description}
             </p>
             <div className="text-center mb-4">
               <button className="px-4 py-2 bg-blue-600 text-white rounded-lg">

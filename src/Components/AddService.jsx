@@ -1,152 +1,201 @@
-import { useState } from "react";
-import { useContext } from "react";
+import React, { useContext } from "react";
+import { useForm } from "react-hook-form";
+import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddService = () => {
-  const [service, setService] = useState({
-    imageUrl: "",
-    name: "",
-    price: "",
-    area: "",
-    description: "",
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  // Refresh data after service addition
+  const { refetch } = useQuery({
+    queryKey: ["addService"],
+    queryFn: async () => {
+      const response = await axios.get("http://localhost:5000/services"); // Replace with correct endpoint
+      return response.data;
+    },
+    enabled: false, // Manual trigger
   });
 
-  const { user } = useContext(AuthContext);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setService((prevService) => ({
-      ...prevService,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const onSubmit = async (data) => {
     const serviceData = {
-      ...service,
-      providerName: user?.displayName,
-      providerEmail: user?.email,
-      providerImage: user?.photoURL,
+      ...data,
+      providerName: user?.displayName || "Anonymous",
+      providerEmail: user?.email || "Unknown",
+      providerImage: user?.photoURL || "",
     };
 
     try {
-      const response = await fetch("http://localhost:5000/addService", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(serviceData),
-      });
+      const response = await axios.post(
+        "http://localhost:5000/addService",
+        serviceData
+      );
 
-      if (response.ok) {
-        Swal.fire("Success!", "Service has been added successfully.", "success");
-        setService({
-          imageUrl: "",
-          name: "",
-          price: "",
-          area: "",
-          description: "",
+      if (response.status === 200 || response.status === 201) {
+        // Successful addition
+        Swal.fire({
+          title: "Success!",
+          text: "Service has been added successfully.",
+          icon: "success",
+        }).then(() => {
+          reset(); // Reset form
+          refetch(); // Refresh data
+          navigate("/allServices"); // Navigate to All Services
         });
       } else {
-        Swal.fire("Error!", "Failed to add service. Try again.", "error");
+        // Handle unexpected status codes
+        console.error("Unexpected response:", response);
+        Swal.fire({
+          title: "Error!",
+          text: `Unexpected status: ${response.status}`,
+          icon: "error",
+        });
       }
     } catch (error) {
-      Swal.fire("Error!", "Could not connect to server.", "error");
+      if (error.response) {
+        // Backend error
+        console.error("Error from backend:", error.response);
+        Swal.fire({
+          title: "Error!",
+          text: error.response.data?.message || "Failed to add service. Try again.",
+          icon: "error",
+        });
+      } else {
+        // Network or other errors
+        console.error("Error during request:", error);
+        Swal.fire({
+          title: "Error!",
+          text: "An unexpected error occurred. Try again.",
+          icon: "error",
+        });
+      }
     }
   };
 
   return (
     <div className="container mx-auto p-8">
-      <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">Add a New Service</h2>
-      <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-200">
+      <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">
+        Add a New Service
+      </h2>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-200"
+      >
+        {/* Image URL */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="imageUrl">
+          <label
+            className="block text-gray-700 font-medium mb-2"
+            htmlFor="imageUrl"
+          >
             Image URL
           </label>
           <input
+            {...register("imageUrl", { required: "Image URL is required" })}
             type="text"
             id="imageUrl"
-            name="imageUrl"
-            value={service.imageUrl}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input input-bordered w-full"
             placeholder="Enter image URL"
-            required
           />
+          {errors.imageUrl && (
+            <p className="text-red-600 text-sm">{errors.imageUrl.message}</p>
+          )}
         </div>
 
+        {/* Service Name */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
+          <label
+            className="block text-gray-700 font-medium mb-2"
+            htmlFor="name"
+          >
             Service Name
           </label>
           <input
+            {...register("name", { required: "Service Name is required" })}
             type="text"
             id="name"
-            name="name"
-            value={service.name}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input input-bordered w-full"
             placeholder="Enter service name"
-            required
           />
+          {errors.name && (
+            <p className="text-red-600 text-sm">{errors.name.message}</p>
+          )}
         </div>
 
+        {/* Price */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="price">
+          <label
+            className="block text-gray-700 font-medium mb-2"
+            htmlFor="price"
+          >
             Price
           </label>
           <input
+            {...register("price", {
+              required: "Price is required",
+              valueAsNumber: true,
+            })}
             type="number"
             id="price"
-            name="price"
-            value={service.price}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input input-bordered w-full"
             placeholder="Enter service price"
-            required
           />
+          {errors.price && (
+            <p className="text-red-600 text-sm">{errors.price.message}</p>
+          )}
         </div>
 
+        {/* Service Area */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="area">
+          <label
+            className="block text-gray-700 font-medium mb-2"
+            htmlFor="area"
+          >
             Service Area
           </label>
           <input
+            {...register("area", { required: "Service Area is required" })}
             type="text"
             id="area"
-            name="area"
-            value={service.area}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="input input-bordered w-full"
             placeholder="Enter service area"
-            required
           />
+          {errors.area && (
+            <p className="text-red-600 text-sm">{errors.area.message}</p>
+          )}
         </div>
 
+        {/* Description */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="description">
+          <label
+            className="block text-gray-700 font-medium mb-2"
+            htmlFor="description"
+          >
             Description
           </label>
           <textarea
+            {...register("description", { required: "Description is required" })}
             id="description"
-            name="description"
-            value={service.description}
-            onChange={handleChange}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="textarea textarea-bordered w-full"
             rows="5"
             placeholder="Enter service description"
-            required
           ></textarea>
+          {errors.description && (
+            <p className="text-red-600 text-sm">{errors.description.message}</p>
+          )}
         </div>
 
+        {/* Submit Button */}
         <div className="text-center">
-          <button
-            type="submit"
-            className="w-full px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-500"
-          >
+          <button type="submit" className="btn btn-primary w-full">
             Add Service
           </button>
         </div>
