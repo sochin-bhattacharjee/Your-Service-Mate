@@ -184,7 +184,7 @@ const AddService = () => {
             Description
           </label>
           <textarea
-            {...register("description", { required: "Description is required" })}
+            {...register("description", { required: "Description is required" , minLength: { value: 100, message: "Description must be at least 100 characters long" } })}
             id="description"
             className="textarea textarea-bordered w-full"
             rows="5"
