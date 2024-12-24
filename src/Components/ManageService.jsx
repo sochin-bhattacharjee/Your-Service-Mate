@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const ManageService = () => {
   const { user } = useContext(AuthContext);
@@ -97,6 +98,9 @@ const ManageService = () => {
 
   return (
     <div className="container mx-auto p-6">
+      <Helmet>
+        <title>{user?.displayName} | Manage Services</title>
+      </Helmet>
       <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
         Manage Services
       </h2>

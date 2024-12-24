@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const ServiceToDo = () => {
   const { user } = useContext(AuthContext);
@@ -49,6 +50,9 @@ const ServiceToDo = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-6">
+      <Helmet>
+        <title>{user?.displayName} | Service To Do</title>
+      </Helmet>
       <h2 className="text-2xl md:text-3xl font-bold text-start text-blue-600 mb-4 md:mb-6">
         Service To Do
       </h2>

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ServiceCard from "./serviceCard";
 import axios from "axios";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const AllServices = () => {
   const [services, setServices] = useState([]);
@@ -58,6 +59,9 @@ const AllServices = () => {
 
   return (
     <div className="container mx-auto p-6">
+      <Helmet>
+        <title>Dashboard | All Services</title>
+      </Helmet>
       {/* Search Box */}
       <div className="sticky top-16 z-10 bg-blue-600 bg-opacity-70 backdrop-blur-md py-4 px-6 rounded-sm shadow-md">
         <div className="flex flex-col md:flex-row justify-between items-center">

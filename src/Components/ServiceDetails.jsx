@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const ServiceDetails = () => {
   const { user } = useContext(AuthContext);
@@ -101,6 +102,9 @@ const ServiceDetails = () => {
 
   return (
     <div className="container mx-auto p-6">
+      <Helmet>
+        <title>{service.name} Details</title>
+      </Helmet>
       <div className="bg-white shadow-lg rounded-lg p-6 transform transition-all hover:shadow-xl">
         <img
           src={service.imageUrl}

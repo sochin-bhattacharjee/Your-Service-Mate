@@ -3,6 +3,7 @@ import axios from "axios";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const BookingServices = () => {
   const { user } = useContext(AuthContext);
@@ -40,6 +41,9 @@ const BookingServices = () => {
 
   return (
     <div className="container mx-auto p-6">
+      <Helmet>
+        <title>{user?.displayName} | Booked Services</title>
+      </Helmet>
       <h1 className="text-3xl font-semibold text-blue-700">Booked Services</h1>
       {bookedServices.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">

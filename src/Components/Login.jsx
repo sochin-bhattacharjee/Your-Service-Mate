@@ -6,6 +6,7 @@ import { AuthContext } from "../provider/AuthProvider";
 import { GrGoogle } from "react-icons/gr";
 import { FaArrowRight } from "react-icons/fa";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const Login = () => {
   const { signInUser, signInWithGoogle } = useContext(AuthContext);
@@ -77,6 +78,9 @@ const Login = () => {
           : "bg-gradient-to-r from-gray-200 to-gray-300 text-black"
       }`}
     >
+      <Helmet>
+        <title>Your Service Mate | Login Login</title>
+      </Helmet>
       <h2 className="font-bold text-3xl text-center mb-4">Login</h2>
       <p className="text-sm text-center mt-2 mb-6">
         Welcome back! Please login to continue.

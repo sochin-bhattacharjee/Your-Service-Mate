@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
+import { Helmet } from "react-helmet";
 
 const AddService = () => {
   const { user } = useContext(AuthContext);
@@ -81,6 +82,9 @@ const AddService = () => {
 
   return (
     <div className="container mx-auto p-8">
+      <Helmet>
+        <title>{`${user?.displayName}`} | Add Service</title>
+      </Helmet>
       <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">
         Add a New Service
       </h2>
