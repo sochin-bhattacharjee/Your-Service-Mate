@@ -101,7 +101,7 @@ const Navbar = () => {
                 : "text-lg font-semibold hover:text-red-600"
             }
           >
-            Home
+            Service
           </NavLink>
 
           <button
@@ -222,7 +222,7 @@ const Navbar = () => {
                 : "text-lg font-semibold hover:text-red-600"
             }
           >
-            Home
+            Service
           </NavLink>
           <button
             onClick={toggleDashboardDropdown}
