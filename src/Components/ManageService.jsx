@@ -2,17 +2,19 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../provider/AuthProvider";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ManageService = () => {
   const { user } = useContext(AuthContext);
   const [services, setServices] = useState([]);
   const [editingService, setEditingService] = useState(null);
   const [formData, setFormData] = useState({});
+  const {baseUrl} = useAxiosSecure();
 
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:5000/services/${user.email}`)
+        .get(`http://localhost:5000/services/${user.email}` , {withCredentials: true})
         .then((response) => setServices(response.data))
         .catch((error) =>
           console.error("Error fetching provider services:", error)
