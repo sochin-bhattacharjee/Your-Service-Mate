@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet";
