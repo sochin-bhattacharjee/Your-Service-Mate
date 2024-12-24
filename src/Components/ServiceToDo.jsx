@@ -81,7 +81,7 @@ const ServiceToDo = () => {
                 </p>
               </div>
 
-              <div className="flex items-center md:self-start">
+              <div className="flex justify-center items-center md:self-start">
                 <select
                   value={service.status}
                   onChange={(e) => handleStatusChange(service._id, e.target.value)}
