@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../hooks/useAxiosSecure";
@@ -20,11 +19,11 @@ const ServiceToDo = () => {
 
   const handleStatusChange = (bookingId, newStatus) => {
     axiosSecure
-      .put(`/bookings/${bookingId}`, { status: newStatus })
+      .put(`/bookings/${bookingId}`, { serviceStatus: newStatus })
       .then(() => {
         setBookedServices((prev) =>
           prev.map((service) =>
-            service._id === bookingId ? { ...service, status: newStatus } : service
+            service._id === bookingId ? { ...service, serviceStatus: newStatus } : service
           )
         );
         Swal.fire("Updated!", "Service status updated successfully!", "success");
@@ -35,8 +34,8 @@ const ServiceToDo = () => {
       });
   };
 
-  const getStatusStyles = (status) => {
-    switch (status) {
+  const getStatusStyles = (serviceStatus) => {
+    switch (serviceStatus) {
       case "pending":
         return "bg-yellow-200 text-yellow-800";
       case "working":
@@ -50,7 +49,7 @@ const ServiceToDo = () => {
 
   return (
     <div className="container mx-auto p-4 md:p-6">
-      <h2 className="text-2xl md:text-3xl font-bold text-center text-blue-600 mb-4 md:mb-6">
+      <h2 className="text-2xl md:text-3xl font-bold text-start text-blue-600 mb-4 md:mb-6">
         Service To Do
       </h2>
 
@@ -60,7 +59,7 @@ const ServiceToDo = () => {
             <div
               key={service._id}
               className={`flex flex-col md:flex-row items-start md:items-center gap-4 p-4 rounded-lg shadow-md ${getStatusStyles(
-                service.status
+                service.serviceStatus
               )}`}
             >
 
@@ -85,9 +84,9 @@ const ServiceToDo = () => {
 
               <div className="flex justify-center items-center md:self-start">
                 <select
-                  value={service.status}
+                  value={service.serviceStatus}
                   onChange={(e) => handleStatusChange(service._id, e.target.value)}
-                  className={`select select-bordered border-2 border-gray-600 ${getStatusStyles(service.status)}`}
+                  className={`select select-bordered border-2 border-gray-600 ${getStatusStyles(service.serviceStatus)}`}
                 >
                   <option value="pending">Pending</option>
                   <option value="working">Working</option>
@@ -98,7 +97,7 @@ const ServiceToDo = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500">
+        <p className="text-center flex justify-center items-center text-gray-900 text-2xl font-semibold">
           No booked services found for you.
         </p>
       )}

@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
 import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
@@ -140,7 +139,7 @@ const ManageService = () => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-gray-500">No services found.</p>
+        <p className="text-center flex justify-center items-center text-gray-900 text-2xl font-semibold">No services found.</p>
       )}
 
       {editingService && (
