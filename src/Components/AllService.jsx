@@ -11,17 +11,17 @@ const AllServices = () => {
   const [itemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
 
-  const {baseUrl} = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
   // Fetching all services with pagination
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await axios.get(
-          `${baseUrl}/allServices?page=${currentPage}&itemsPerPage=${itemsPerPage}`
+        const response = await axiosSecure.get(
+          `/allServices?page=${currentPage}&itemsPerPage=${itemsPerPage}`
         );
         setServices(response.data.services);
-        setFilteredServices(response.data.services);
+        setFilteredServices(response.data.services); 
         setTotalPages(response.data.totalPages);
       } catch (error) {
         console.error("Error fetching services:", error);

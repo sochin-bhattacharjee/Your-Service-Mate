@@ -9,18 +9,27 @@ const ManageService = () => {
   const [services, setServices] = useState([]);
   const [editingService, setEditingService] = useState(null);
   const [formData, setFormData] = useState({});
-  const {baseUrl} = useAxiosSecure();
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     if (user?.email) {
-      axios
-        .get(`http://localhost:5000/services/${user.email}` , {withCredentials: true})
-        .then((response) => setServices(response.data))
-        .catch((error) =>
-          console.error("Error fetching provider services:", error)
-        );
+      axiosSecure
+        .get(`/services/${user.email}`)
+        .then((response) => {
+          if (Array.isArray(response.data)) {
+            setServices(response.data);
+          } else {
+            console.error("Expected an array but got:", response.data);
+            setServices([]);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching provider services:", error);
+          setServices([]);
+        });
     }
-  }, [user?.email]);
+  }, [user?.email, axiosSecure]);
+  
 
   const openEditModal = (service) => {
     setEditingService(service);
@@ -37,8 +46,8 @@ const ManageService = () => {
 
   delete dataToSend._id;
     console.log(editingService._id);
-    axios
-      .put(`http://localhost:5000/service/${editingService._id}`, dataToSend)
+    axiosSecure
+      .put(`/service/${editingService._id}`, dataToSend)
       .then(() => {
         setServices((prev) =>
           prev.map((srv) =>
@@ -71,8 +80,8 @@ const ManageService = () => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axios
-          .delete(`http://localhost:5000/service/${serviceId}`)
+        axiosSecure
+          .delete(`/service/${serviceId}`)
           .then(() => {
             setServices((prev) =>
               prev.filter((service) => service._id !== serviceId)

@@ -1,34 +1,34 @@
 import { useContext, useEffect, useState } from "react";
+import axios from "axios";
 import { AuthContext } from "../provider/AuthProvider";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const BookingServices = () => {
   const { user } = useContext(AuthContext);
   const [bookedServices, setBookedServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
-
-    if (user) {
-      const fetchBookedServices = async () => {
-        try {
-          const response = await fetch(`http://localhost:5000/bookings/${user?.email}`);
-          if (response.ok) {
-            const data = await response.json();
-            setBookedServices(data);
+    if (user?.email) {
+      axiosSecure
+        .get(`/bookings/${user.email}`)
+        .then((response) => {
+          setBookedServices(response.data);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            setBookedServices([]);
           } else {
-            setError("No booked services found.");
+            setError("Error fetching booked services.");
+            console.error("Error fetching booked services:", error);
           }
-        } catch (error) {
-          setError("Error fetching booked services.");
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchBookedServices();
+        })
+        .finally(() => setLoading(false));
     }
-  }, [user]);
+  }, [user?.email, axiosSecure]);
 
   if (loading) {
     return <div>Loading...</div>;

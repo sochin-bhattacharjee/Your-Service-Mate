@@ -5,10 +5,12 @@ import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const AddService = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
   const {
     register,
     handleSubmit,
@@ -19,7 +21,7 @@ const AddService = () => {
   const { refetch } = useQuery({
     queryKey: ["addService"],
     queryFn: async () => {
-      const response = await axios.get("http://localhost:5000/services");
+      const response = await axiosSecure.get(`/services`);
       return response.data;
     },
     enabled: false,
@@ -34,8 +36,8 @@ const AddService = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/addService",
+      const response = await axiosSecure.post(
+        `/addService`,
         serviceData
       );
 

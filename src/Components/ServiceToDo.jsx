@@ -2,23 +2,25 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ServiceToDo = () => {
   const { user } = useContext(AuthContext);
   const [bookedServices, setBookedServices] = useState([]);
+  const axiosSecure = useAxiosSecure();
 
   useEffect(() => {
     if (user?.email) {
-      axios
-        .get(`http://localhost:5000/bookings/${user.email}`)
+      axiosSecure
+        .get(`/bookings/${user.email}`)
         .then((response) => setBookedServices(response.data))
         .catch((error) => console.error("Error fetching booked services:", error));
     }
-  }, [user?.email]);
+  }, [user?.email, axiosSecure]);
 
   const handleStatusChange = (bookingId, newStatus) => {
-    axios
-      .put(`http://localhost:5000/bookings/${bookingId}`, { status: newStatus })
+    axiosSecure
+      .put(`/bookings/${bookingId}`, { status: newStatus })
       .then(() => {
         setBookedServices((prev) =>
           prev.map((service) =>

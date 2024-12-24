@@ -4,18 +4,22 @@ import { useQuery } from "@tanstack/react-query";
 import Swal from "sweetalert2";
 import { useForm } from "react-hook-form";
 import { AuthContext } from "../provider/AuthProvider";
-
-const fetchServiceDetails = async (id) => {
-  const response = await fetch(`http://localhost:5000/service/${id}`);
-  if (!response.ok) {
-    throw new Error("Failed to fetch service details");
-  }
-  return response.json();
-};
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 const ServiceDetails = () => {
-    const { user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const { id } = useParams();
+  const axiosSecure = useAxiosSecure();
+
+  const fetchServiceDetails = async (id) => {
+    try {
+      const response = await axiosSecure.get(`/service/${id}`);
+      return response.data;
+    } catch (error) {
+      throw new Error("Failed to fetch service details" + error.message);
+    }
+  };
+
   const { data: service, isLoading, isError, error } = useQuery({
     queryKey: ["serviceDetails", id],
     queryFn: () => fetchServiceDetails(id),
@@ -62,19 +66,28 @@ const ServiceDetails = () => {
       serviceStatus: "pending",
     };
 
-    const response = await fetch("http://localhost:5000/bookings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookingData),
-    });
+    try {
+      const response = await axiosSecure.post(`/bookings`, bookingData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response.data)
 
-    if (response.ok) {
-      Swal.fire("Success!", "Your booking is confirmed!", "success");
-      setShowModal(false);
-    } else {
-      Swal.fire("Error!", "Booking failed. Please try again.", "error");
+      if (response.data) {
+        Swal.fire("Success!", "Your booking is confirmed!", "success");
+        setShowModal(false);
+      } 
+      else {
+        Swal.fire("Error!", "Booking failed. Please try again.", "error");
+      }
+    } catch (error) {
+      console.error("Error during booking:", error);
+      Swal.fire(
+        "Error!",
+        error.response?.data?.message || "Booking failed. Please try again.",
+        "error"
+      );
     }
   };
 
@@ -88,7 +101,6 @@ const ServiceDetails = () => {
 
   return (
     <div className="container mx-auto p-6">
-
       <div className="bg-white shadow-lg rounded-lg p-6 transform transition-all hover:shadow-xl">
         <img
           src={service.imageUrl}
@@ -150,46 +162,10 @@ const ServiceDetails = () => {
                 />
               </div>
               <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Service Image</label>
-                <input
-                  type="text"
-                  value={service.imageUrl}
-                  readOnly
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Provider Email</label>
-                <input
-                  type="text"
-                  value={service.providerEmail}
-                  readOnly
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Provider Name</label>
-                <input
-                  type="text"
-                  value={service.providerName}
-                  readOnly
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div className="mt-4">
                 <label className="block text-sm font-semibold text-gray-800">Your Email</label>
                 <input
                   type="text"
                   value={user?.email || "guest@example.com"}
-                  readOnly
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Your Name</label>
-                <input
-                  type="text"
-                  value={user?.displayName || "Guest User"}
                   readOnly
                   className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -211,24 +187,24 @@ const ServiceDetails = () => {
                   {...register("specialInstruction")}
                   rows="4"
                   className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                ></textarea>
+                />
               </div>
-              <div className="mt-6 flex justify-between items-center">
-                <p className="font-bold text-base md:text-lg">Price: ${service.price}</p>
+              <div className="mt-6 flex justify-between gap-2 items-center">
                 <button
                   type="submit"
-                  className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-all"
+                  className="px-3 md:px-6 py-3 bg-blue-600 text-sm md:text-base text-white rounded-lg hover:bg-blue-700 transition-all"
                 >
-                  Purchase
+                  Confirm Booking
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="px-6 py-3 bg-red-600 text-sm md:text-base text-white rounded-lg hover:bg-red-700 transition-all"
+                >
+                  Cancel
                 </button>
               </div>
             </form>
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-[calc(20px+1rem)] right-4 text-gray-500 text-3xl"
-            >
-              &times;
-            </button>
           </div>
         </div>
       )}
