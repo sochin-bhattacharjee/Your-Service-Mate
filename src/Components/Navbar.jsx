@@ -7,6 +7,7 @@ import logo from "../assets/images/YourServiceMate_Logo.png";
 import { useTheme } from "../context/ThemeContext";
 import { RiLightbulbFill, RiLightbulbFlashFill } from "react-icons/ri";
 import { FaBarsStaggered } from "react-icons/fa6";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Navbar = () => {
   const { signOutUser, user } = useContext(AuthContext);
@@ -52,6 +53,16 @@ const Navbar = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const dropdownVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const menuVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: { opacity: 1, x: 0 },
   };
 
   return (
@@ -111,52 +122,67 @@ const Navbar = () => {
             Dashboard
             {isDropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
           </button>
-          {isDropdownOpen && (
-            <div
-              className={`absolute left-1/2 transform -translate-x-1/2 top-[100%] bg-gray-100 shadow-md p-4 rounded-md ${
-                theme === "dark" ? "bg-gray-700 text-white" : "bg-gray-100"
-              }`}
-              style={{ maxWidth: "800px", width: "25%" }}
-            >
-              <ul className="flex flex-col gap-2">
-                <li>
-                  <NavLink to="/allServices" className="hover:text-red-600">
-                    All Services
-                  </NavLink>
-                </li>
-                {user && (
-                  <>
-                    <li>
-                      <NavLink to="/addService" className="hover:text-red-600">
-                        Add Service
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/manageService"
-                        className="hover:text-red-600"
-                      >
-                        Manage Service
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink
-                        to="/bookedServices"
-                        className="hover:text-red-600"
-                      >
-                        Booked Services
-                      </NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="/serviceToDo" className="hover:text-red-600">
-                        Service To Do
-                      </NavLink>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </div>
-          )}
+          <AnimatePresence>
+            {isDropdownOpen && (
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                exit="hidden"
+                variants={dropdownVariants}
+                className={`absolute left-1/2 transform -translate-x-1/2 top-[100%] shadow-md p-4 rounded-md ${
+                  theme === "dark" ? "bg-gray-700 text-white" : "bg-gray-100"
+                }`}
+                style={{ maxWidth: "800px", width: "25%" }}
+              >
+                <ul className="flex flex-col gap-2">
+                  <li>
+                    <NavLink
+                      to="/allServices"
+                      className="hover:text-red-600"
+                    >
+                      All Services
+                    </NavLink>
+                  </li>
+                  {user && (
+                    <>
+                      <li>
+                        <NavLink
+                          to="/addService"
+                          className="hover:text-red-600"
+                        >
+                          Add Service
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/manageService"
+                          className="hover:text-red-600"
+                        >
+                          Manage Service
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/bookedServices"
+                          className="hover:text-red-600"
+                        >
+                          Booked Services
+                        </NavLink>
+                      </li>
+                      <li>
+                        <NavLink
+                          to="/serviceToDo"
+                          className="hover:text-red-600"
+                        >
+                          Service To Do
+                        </NavLink>
+                      </li>
+                    </>
+                  )}
+                </ul>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {user ? (
             <button
@@ -212,49 +238,58 @@ const Navbar = () => {
         </div>
       </div>
 
-      {isMenuOpen && (
-        <div className="absolute flex flex-col gap-4 bg-gray-700 p-4 rounded-lg lg:hidden">
-          <NavLink
-            to="/"
-            className={({ isActive }) =>
-              isActive
-                ? "text-red-600 border-b-2 border-red-600 text-md font-semibold"
-                : "text-lg font-semibold hover:text-red-600"
-            }
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={menuVariants}
+            className="absolute flex flex-col gap-4 bg-gray-700 p-4 rounded-lg lg:hidden"
           >
-            Service
-          </NavLink>
-          <button
-            onClick={toggleDashboardDropdown}
-            className="text-md font-semibold hover:text-red-600 flex items-center gap-1"
-          >
-            Dashboard
-            {isDropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
-          </button>
-          {isDropdownOpen && (
-            <ul
-              className={`p-2 shadow rounded-lg ${
-                theme === "dark" ? "bg-gray-500 text-white" : "bg-gray-100"
-              }`}
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive
+                  ? "text-red-600 border-b-2 border-red-600 text-md font-semibold"
+                  : "text-lg font-semibold hover:text-red-600"
+              }
             >
-              <li>
-                <NavLink to="/allServices" className="hover:text-red-600">
-                  All Services
-                </NavLink>
-              </li>
-              {user && (
-                <>
-                  <li>
-                    <NavLink to="/addService" className="hover:text-red-600">
-                      Add Service
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink to="/manageService" className="hover:text-red-600">
-                      Manage Service
-                    </NavLink>
-                  </li>
-
+              Service
+            </NavLink>
+            <button
+              onClick={toggleDashboardDropdown}
+              className="text-md font-semibold hover:text-red-600 flex items-center gap-1"
+            >
+              Dashboard
+              {isDropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
+            </button>
+            {isDropdownOpen && (
+              <ul
+                className={`p-2 shadow rounded-lg ${
+                  theme === "dark" ? "bg-gray-500 text-white" : "bg-gray-100"
+                }`}
+              >
+                <li>
+                  <NavLink to="/allServices" className="hover:text-red-600">
+                    All Services
+                  </NavLink>
+                </li>
+                {user && (
+                  <>
+                    <li>
+                      <NavLink to="/addService" className="hover:text-red-600">
+                        Add Service
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink
+                        to="/manageService"
+                        className="hover:text-red-600"
+                      >
+                        Manage Service
+                      </NavLink>
+                    </li>
                     <li>
                       <NavLink
                         to="/bookedServices"
@@ -264,39 +299,43 @@ const Navbar = () => {
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to="/serviceToDo" className="hover:text-red-600">
+                      <NavLink
+                        to="/serviceToDo"
+                        className="hover:text-red-600"
+                      >
                         Service To Do
                       </NavLink>
                     </li>
-                </>
-              )}
-            </ul>
-          )}
-          {user ? (
-            <button
-              onClick={handleLogout}
-              className="text-md font-semibold hover:text-red-600"
-            >
-              Logout
-            </button>
-          ) : (
-            <>
-              <NavLink
-                to="/login"
+                  </>
+                )}
+              </ul>
+            )}
+            {user ? (
+              <button
+                onClick={handleLogout}
                 className="text-md font-semibold hover:text-red-600"
               >
-                Login
-              </NavLink>
-              <NavLink
-                to="/register"
-                className="text-md font-semibold hover:text-red-600"
-              >
-                Register
-              </NavLink>
-            </>
-          )}
-        </div>
-      )}
+                Logout
+              </button>
+            ) : (
+              <>
+                <NavLink
+                  to="/login"
+                  className="text-md font-semibold hover:text-red-600"
+                >
+                  Login
+                </NavLink>
+                <NavLink
+                  to="/register"
+                  className="text-md font-semibold hover:text-red-600"
+                >
+                  Register
+                </NavLink>
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

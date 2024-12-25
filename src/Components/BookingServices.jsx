@@ -70,7 +70,7 @@ const BookingServices = () => {
                 </p>
                 <div>
                   <p className="mt-2 text-sm md:text-lg font-medium md:font-semibold text-black ">
-                    <span className="bg-gray-200 px-1 md:px-3 py-2 rounded-l-full border-r-2 border-black">Status: </span><span className={`${booking.serviceStatus === "pending" ? "bg-yellow-600" : bookedServices.serviceStatus === "working" ? "bg-blue-600" : "bg-green-600"} px-1 md:px-3 py-2 rounded-r-full`}>{booking.serviceStatus}</span>
+                    <span className="bg-gray-200 px-1 md:px-3 py-2 rounded-l-full border-r-2 border-black">Status: </span><span className={`${booking.serviceStatus === "pending" ? "bg-yellow-600" : booking.serviceStatus === "working" ? "bg-blue-600" : "bg-green-600"} px-1 md:px-3 py-2 rounded-r-full`}>{booking.serviceStatus.toUpperCase()}</span>
                   </p>
                 </div>
               </div>
