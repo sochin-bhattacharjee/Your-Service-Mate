@@ -3,6 +3,7 @@ import ServiceCard from "./serviceCard";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet";
 import { GrChapterNext, GrChapterPrevious } from "react-icons/gr";
+import { motion } from "framer-motion";
 
 const AllServices = () => {
   const [services, setServices] = useState([]);
@@ -42,7 +43,6 @@ const AllServices = () => {
     setFilteredServices(filtered);
   };
 
-
   const updateVisiblePages = (current) => {
     const updatedPages = [];
     const start = Math.max(1, current - 1);
@@ -54,7 +54,6 @@ const AllServices = () => {
     setVisiblePages(updatedPages);
   };
 
-
   const handleNext = () => {
     if (currentPage < totalPages) {
       const nextPage = currentPage + 1;
@@ -62,7 +61,6 @@ const AllServices = () => {
       updateVisiblePages(nextPage);
     }
   };
-
 
   const handlePrev = () => {
     if (currentPage > 1) {
@@ -82,16 +80,32 @@ const AllServices = () => {
   }, [totalPages, currentPage]);
 
   return (
-    <div className="container mx-auto p-6">
+    <motion.div
+      className="container mx-auto p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Helmet>
         <title>Dashboard | All Services</title>
       </Helmet>
       {/* Search Box */}
-      <div className="sticky top-16 z-10 bg-blue-600 bg-opacity-70 backdrop-blur-md py-4 px-6 rounded-sm shadow-md">
+      <motion.div
+        className="sticky top-16 z-10 bg-blue-600 bg-opacity-70 backdrop-blur-md py-4 px-6 rounded-sm shadow-md"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <h2 className="text-3xl font-bold text-white mb-4 md:mb-0">
+          <motion.h2
+            className="text-3xl font-bold text-white mb-4 md:mb-0"
+            initial={{ scale: 0.9 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             All Services
-          </h2>
+          </motion.h2>
           <div>
             <input
               type="text"
@@ -102,37 +116,56 @@ const AllServices = () => {
             />
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      <div className="space-y-6 mt-6">
+      <motion.div
+        className="space-y-6 mt-6"
+        initial={{ scale: 0.95, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      >
         {filteredServices.length > 0 ? (
           filteredServices.map((service) => (
             <ServiceCard key={service._id} service={service} />
           ))
         ) : (
-          <p className="text-center text-gray-500">
+          <motion.p
+            className="text-center text-gray-500"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             No services found matching "{searchQuery}"
-          </p>
+          </motion.p>
         )}
-      </div>
+      </motion.div>
 
-      <div className="flex justify-center items-center mt-6 space-x-2">
+      <motion.div
+        className="flex justify-center items-center mt-6 space-x-2"
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
+      >
         <button
-          className={`btn ${currentPage === 1 ? "btn-disabled" : "btn-primary"}`}
+          className={`btn ${
+            currentPage === 1 ? "btn-disabled" : "btn-primary"
+          }`}
           onClick={handlePrev}
         >
-         <GrChapterPrevious />
+          <GrChapterPrevious />
         </button>
         {visiblePages.map((page) => (
-          <button
+          <motion.button
             key={page}
             className={`btn ${
               currentPage === page ? "btn-primary" : "btn-ghost"
             }`}
             onClick={() => handlePageClick(page)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
           >
             {page}
-          </button>
+          </motion.button>
         ))}
         <button
           className={`btn ${
@@ -142,8 +175,8 @@ const AllServices = () => {
         >
           <GrChapterNext />
         </button>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 

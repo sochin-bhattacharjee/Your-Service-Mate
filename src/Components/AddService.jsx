@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet";
+import { motion } from "framer-motion";
 
 const AddService = () => {
   const { user } = useContext(AuthContext);
@@ -36,13 +37,9 @@ const AddService = () => {
     };
 
     try {
-      const response = await axiosSecure.post(
-        `/addService`,
-        serviceData
-      );
+      const response = await axiosSecure.post(`/addService`, serviceData);
 
       if (response.status === 200 || response.status === 201) {
-
         Swal.fire({
           title: "Success!",
           text: "Service has been added successfully.",
@@ -79,24 +76,41 @@ const AddService = () => {
     }
   };
 
+  const formVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.8 } },
+  };
+
+  const buttonVariants = {
+    hover: { scale: 1.05, transition: { yoyo: Infinity, duration: 0.3 } },
+  };
+
   return (
-    <div className="container mx-auto p-8">
+    <motion.div
+      className="container mx-auto p-8"
+      initial="hidden"
+      animate="visible"
+      variants={formVariants}
+    >
       <Helmet>
         <title>{`${user?.displayName}`} | Add Service</title>
       </Helmet>
-      <h2 className="text-3xl font-semibold text-center text-blue-600 mb-6">
+      <motion.h2
+        className="text-3xl font-semibold text-center text-blue-600 mb-6"
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
         Add a New Service
-      </h2>
-      <form
+      </motion.h2>
+      <motion.form
         onSubmit={handleSubmit(onSubmit)}
         className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-200"
+        variants={formVariants}
       >
         {/* Image URL */}
         <div className="mb-6">
-          <label
-            className="block text-gray-700 font-medium mb-2"
-            htmlFor="imageUrl"
-          >
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="imageUrl">
             Image URL
           </label>
           <input
@@ -113,10 +127,7 @@ const AddService = () => {
 
         {/* Service Name */}
         <div className="mb-6">
-          <label
-            className="block text-gray-700 font-medium mb-2"
-            htmlFor="name"
-          >
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
             Service Name
           </label>
           <input
@@ -133,10 +144,7 @@ const AddService = () => {
 
         {/* Price */}
         <div className="mb-6">
-          <label
-            className="block text-gray-700 font-medium mb-2"
-            htmlFor="price"
-          >
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="price">
             Price
           </label>
           <input
@@ -156,10 +164,7 @@ const AddService = () => {
 
         {/* Service Area */}
         <div className="mb-6">
-          <label
-            className="block text-gray-700 font-medium mb-2"
-            htmlFor="area"
-          >
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="area">
             Service Area
           </label>
           <input
@@ -176,14 +181,17 @@ const AddService = () => {
 
         {/* Description */}
         <div className="mb-6">
-          <label
-            className="block text-gray-700 font-medium mb-2"
-            htmlFor="description"
-          >
+          <label className="block text-gray-700 font-medium mb-2" htmlFor="description">
             Description
           </label>
           <textarea
-            {...register("description", { required: "Description is required" , minLength: { value: 100, message: "Description must be at least 100 characters long" } })}
+            {...register("description", {
+              required: "Description is required",
+              minLength: {
+                value: 100,
+                message: "Description must be at least 100 characters long",
+              },
+            })}
             id="description"
             className="textarea textarea-bordered w-full"
             rows="5"
@@ -196,12 +204,17 @@ const AddService = () => {
 
         {/* Submit Button */}
         <div className="text-center">
-          <button type="submit" className="btn btn-primary w-full">
+          <motion.button
+            type="submit"
+            className="btn btn-primary w-full"
+            variants={buttonVariants}
+            whileHover="hover"
+          >
             Add Service
-          </button>
+          </motion.button>
         </div>
-      </form>
-    </div>
+      </motion.form>
+    </motion.div>
   );
 };
 
