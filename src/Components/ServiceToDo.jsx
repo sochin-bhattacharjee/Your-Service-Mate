@@ -12,7 +12,7 @@ const ServiceToDo = () => {
   useEffect(() => {
     if (user?.email) {
       axiosSecure
-        .get(`/bookings/${user.email}`)
+        .get(`/bookings-provider/${user.email}`)
         .then((response) => setBookedServices(response.data))
         .catch((error) => console.error("Error fetching booked services:", error));
     }

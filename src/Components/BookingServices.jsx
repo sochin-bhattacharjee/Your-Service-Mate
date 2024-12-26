@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { AuthContext } from "../provider/AuthProvider";
-import Swal from "sweetalert2";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet";
 
@@ -15,7 +13,7 @@ const BookingServices = () => {
   useEffect(() => {
     if (user?.email) {
       axiosSecure
-        .get(`/bookings/${user.email}`)
+        .get(`/bookings-user/${user.email}`)
         .then((response) => {
           setBookedServices(response.data);
         })
@@ -57,20 +55,20 @@ const BookingServices = () => {
                 alt={booking.serviceName}
                 className="w-full h-[250px] object-cover object-center rounded-lg"
               />
-              <h2 className="text-lg md:text-xl font-semibold text-blue-700 mt-4">
+              <h2 className="text-lg md:text-xl xl:text-2xl font-semibold text-blue-700 mt-4">
                 {booking.serviceName}
               </h2>
               <p className="mt-2 text-sm md:text-base text-gray-700">{booking.specialInstruction}</p>
-              <p className="mt-4 text-sm md:text-lg font-medium text-green-600">
+              <p className="mt-4 text-sm md:text-base xl:text-lg font-medium text-green-600">
                 Booking Date: {booking.serviceTakingDate}
               </p>
               <div className="mt-4 flex justify-between">
-                <p className="mt-2 text-sm md:text-lg font-medium text-orange-500">
+                <p className="mt-2 text-sm md:text-base xl:text-lg font-medium text-orange-500">
                   Price: ${booking.price}
                 </p>
                 <div>
-                  <p className="mt-2 text-sm md:text-lg font-medium md:font-semibold text-black ">
-                    <span className="bg-gray-200 px-1 md:px-3 py-2 rounded-l-full border-r-2 border-black">Status: </span><span className={`${booking.serviceStatus === "pending" ? "bg-yellow-600" : booking.serviceStatus === "working" ? "bg-blue-600" : "bg-green-600"} px-1 md:px-3 py-2 rounded-r-full`}>{booking.serviceStatus.toUpperCase()}</span>
+                  <p className="mt-2 text-sm md:text-base xl:text-lg font-medium md:font-semibold text-black ">
+                    <span className="bg-gray-200 px-1 md:px-2 xl:px-3 py-2 xl:py-3 rounded-l-full border-r-2 border-black">Status: </span><span className={`${booking.serviceStatus === "pending" ? "bg-yellow-600" : booking.serviceStatus === "working" ? "bg-blue-600" : "bg-green-600"} px-1 md:px-2 xl:px-3 py-2 xl:py-3 rounded-r-full`}>{booking.serviceStatus.toUpperCase()}</span>
                   </p>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
@@ -29,7 +30,6 @@ const ManageService = () => {
         });
     }
   }, [user?.email, axiosSecure]);
-  
 
   const openEditModal = (service) => {
     setEditingService(service);
@@ -43,9 +43,8 @@ const ManageService = () => {
 
   const handleSave = () => {
     const dataToSend = { ...formData };
+    delete dataToSend._id;
 
-  delete dataToSend._id;
-    console.log(editingService._id);
     axiosSecure
       .put(`/service/${editingService._id}`, dataToSend)
       .then(() => {
@@ -67,7 +66,6 @@ const ManageService = () => {
     setEditingService(null);
     setFormData({});
   };
-
 
   const handleDelete = (serviceId) => {
     Swal.fire({
@@ -96,34 +94,59 @@ const ManageService = () => {
     });
   };
 
+  const fadeIn = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0 },
+  };
+
+  const scaleUp = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 },
+  };
+
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
       <Helmet>
         <title>{user?.displayName} | Manage Services</title>
       </Helmet>
-      <h2 className="text-3xl font-bold text-center text-blue-600 mb-6">
+      <motion.h2
+        className="text-3xl font-bold text-center text-blue-600 mb-6"
+        initial="hidden"
+        animate="visible"
+        variants={fadeIn}
+        transition={{ duration: 0.5 }}
+      >
         Manage Services
-      </h2>
+      </motion.h2>
 
       {services.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div
+          className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+          transition={{ staggerChildren: 0.1 }}
+        >
           {services.map((service) => (
-            <div
+            <motion.div
               key={service._id}
               className="p-4 rounded-lg shadow-md bg-white flex flex-col justify-between"
+              variants={scaleUp}
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
             >
               <img
                 src={service.imageUrl}
                 alt={service.name}
-                className="w-full h-40 md:h-56 object-center object-cover rounded-md mb-4"
+                className="w-full h-40 sm:h-48 md:h-56 object-center object-cover rounded-md mb-4"
               />
               <div>
-                <h3 className="text-xl font-semibold">{service.name}</h3>
-                <p className="text-sm text-gray-500">Price: ${service.price}</p>
-                <p className="text-sm text-gray-500">Area: {service.area}</p>
-                <p className="text-sm text-gray-500">
-                  Provider: {service.providerName}
-                </p>
+                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                  {service.name}
+                </h3>
+                <p className="text-sm text-gray-600 mb-1">Price: ${service.price}</p>
+                <p className="text-sm text-gray-600 mb-1">Area: {service.area}</p>
+                <p className="text-sm text-gray-600">Provider: {service.providerName}</p>
               </div>
               <div className="mt-4 flex justify-between gap-2">
                 <button
@@ -139,15 +162,28 @@ const ManageService = () => {
                   Delete
                 </button>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
-        <p className="text-center flex justify-center items-center text-gray-900 text-2xl font-semibold">No services found.</p>
+        <motion.p
+          className="text-center text-gray-900 text-2xl font-semibold"
+          initial="hidden"
+          animate="visible"
+          variants={fadeIn}
+        >
+          No services found.
+        </motion.p>
       )}
 
       {editingService && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto">
+        <motion.div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-y-auto"
+          initial="hidden"
+          animate="visible"
+          exit="hidden"
+          variants={fadeIn}
+        >
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl mt-10 relative">
             <h3 className="text-lg font-bold mb-4">Edit Service</h3>
             <div className="space-y-4 max-h-[70vh] overflow-y-auto px-4">
@@ -177,7 +213,7 @@ const ManageService = () => {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );

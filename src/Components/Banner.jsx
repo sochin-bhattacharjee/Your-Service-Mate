@@ -46,7 +46,7 @@ const Banner = () => {
   ];
 
   const handleSlideChange = (swiper) => {
-    setCurrentSlideIndex(swiper.realIndex); 
+    setCurrentSlideIndex(swiper.realIndex);
   };
 
   const letterAnimation = {
@@ -56,7 +56,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="w-full h-auto py-8 px-4">
+    <div className="w-full h-auto py-8 px-4 sm:px-6 lg:px-8">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
@@ -68,13 +68,14 @@ const Banner = () => {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-gray-100 p-14 lg:p-24 py-40 rounded-lg shadow-lg">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 bg-gray-100 p-8 md:p-14 xl:p-20 rounded-lg shadow-lg">
+              {/* Text Section */}
               <motion.div
-                className="text-left max-w-md"
+                className="text-left w-full md:max-w-sm"
                 key={currentSlideIndex === index ? "current" : "hidden"}
               >
                 <motion.h2
-                  className="text-4xl font-bold mb-4 text-blue-600"
+                  className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-blue-600"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -84,16 +85,13 @@ const Banner = () => {
                   }}
                 >
                   {slide.title.split("").map((char, i) => (
-                    <motion.span
-                      key={i}
-                      variants={letterAnimation}
-                    >
+                    <motion.span key={i} variants={letterAnimation}>
                       {char}
                     </motion.span>
                   ))}
                 </motion.h2>
                 <motion.p
-                  className="text-gray-700 text-sm"
+                  className="text-gray-700 text-sm sm:text-base"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -103,23 +101,21 @@ const Banner = () => {
                   }}
                 >
                   {slide.description.split("").map((char, i) => (
-                    <motion.span
-                      key={i}
-                      variants={letterAnimation}
-                    >
+                    <motion.span key={i} variants={letterAnimation}>
                       {char}
                     </motion.span>
                   ))}
                 </motion.p>
               </motion.div>
 
-              <div className="flex gap-4">
+              {/* Images Section */}
+              <div className="flex flex-wrap gap-4 justify-center">
                 {[slide.image1, slide.image2].map((image, i) => (
                   <motion.img
                     key={i}
                     src={image}
                     alt={`Slide ${index + 1} - Image ${i + 1}`}
-                    className="w-72 h-72 rounded-bl-3xl rounded-tr-3xl border-l-4 border-b-4 border-blue-300 rounded-br-lg rounded-tl-lg object-cover shadow-md"
+                    className="w-44 sm:w-56 md:w-64 lg:w-72 h-44 sm:h-56 md:h-64 lg:h-72 rounded-bl-3xl rounded-tr-3xl border-l-4 border-b-4 border-blue-300 rounded-br-lg rounded-tl-lg object-cover shadow-md"
                     animate={{
                       y: [0, -10, 0],
                     }}

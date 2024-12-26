@@ -6,15 +6,15 @@ import { MdSanitizer } from 'react-icons/md';
 import { GiGloves } from "react-icons/gi";
 const WhyChoose = () => {
   return (
-    <div className="container p-8 w-[80%] mx-auto">
+    <div className="container p-2 md:p-8 w-[80%] mx-auto">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-blue-600">Why Choose Us</h2>
         <p className="text-lg text-gray-600 mt-2">
           Because we care about your safety...
         </p>
       </div>
-      <div className='flex'>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-[40%]">
+      <div className='flex flex-col-reverse lg:flex-row gap-5'>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:w-[40%]">
         {/* Card 1 */}
         <motion.div
           className="card shadow-lg p-6 border rounded-lg hover:shadow-xl transition-shadow"
@@ -55,7 +55,7 @@ const WhyChoose = () => {
           <p className="text-gray-600 text-sm">We ensure everyone wears gloves for extra protection.</p>
         </motion.div>
       </div>
-      <div className="mt-12 text-center w-[60%]">
+      <div className="mt-12 text-center lg:w-[60%]">
         <img
           src={service}
           alt="Safety Measures"
