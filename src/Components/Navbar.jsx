@@ -138,7 +138,11 @@ const Navbar = () => {
                   <li>
                     <NavLink
                       to="/allServices"
-                      className="hover:text-red-600"
+                      className={({ isActive }) =>
+                        isActive
+                          ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                          : "text-lg font-semibold hover:text-red-600"
+                      }
                     >
                       All Services
                     </NavLink>
@@ -148,7 +152,11 @@ const Navbar = () => {
                       <li>
                         <NavLink
                           to="/addService"
-                          className="hover:text-red-600"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-red-600"
+                          }
                         >
                           Add Service
                         </NavLink>
@@ -156,7 +164,11 @@ const Navbar = () => {
                       <li>
                         <NavLink
                           to="/manageService"
-                          className="hover:text-red-600"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-red-600"
+                          }
                         >
                           Manage Service
                         </NavLink>
@@ -164,7 +176,11 @@ const Navbar = () => {
                       <li>
                         <NavLink
                           to="/bookedServices"
-                          className="hover:text-red-600"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-red-600"
+                          }
                         >
                           Booked Services
                         </NavLink>
@@ -172,7 +188,11 @@ const Navbar = () => {
                       <li>
                         <NavLink
                           to="/serviceToDo"
-                          className="hover:text-red-600"
+                          className={({ isActive }) =>
+                            isActive
+                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-red-600"
+                          }
                         >
                           Service To Do
                         </NavLink>
@@ -271,21 +291,39 @@ const Navbar = () => {
                 }`}
               >
                 <li>
-                  <NavLink to="/allServices" className="hover:text-red-600">
+                  <NavLink
+                    to="/allServices"
+                    className={({ isActive }) =>
+                      isActive
+                        ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                        : "text-lg font-semibold hover:text-red-600"
+                    }
+                  >
                     All Services
                   </NavLink>
                 </li>
                 {user && (
                   <>
                     <li>
-                      <NavLink to="/addService" className="hover:text-red-600">
+                      <NavLink
+                        to="/addService"
+                        className={({ isActive }) =>
+                          isActive
+                            ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                            : "text-lg font-semibold hover:text-red-600"
+                        }
+                      >
                         Add Service
                       </NavLink>
                     </li>
                     <li>
                       <NavLink
                         to="/manageService"
-                        className="hover:text-red-600"
+                        className={({ isActive }) =>
+                          isActive
+                            ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                            : "text-lg font-semibold hover:text-red-600"
+                        }
                       >
                         Manage Service
                       </NavLink>
@@ -293,7 +331,11 @@ const Navbar = () => {
                     <li>
                       <NavLink
                         to="/bookedServices"
-                        className="hover:text-red-600"
+                        className={({ isActive }) =>
+                          isActive
+                            ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                            : "text-lg font-semibold hover:text-red-600"
+                        }
                       >
                         Booked Services
                       </NavLink>
@@ -301,7 +343,11 @@ const Navbar = () => {
                     <li>
                       <NavLink
                         to="/serviceToDo"
-                        className="hover:text-red-600"
+                        className={({ isActive }) =>
+                          isActive
+                            ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                            : "text-lg font-semibold hover:text-red-600"
+                        }
                       >
                         Service To Do
                       </NavLink>
@@ -321,13 +367,21 @@ const Navbar = () => {
               <>
                 <NavLink
                   to="/login"
-                  className="text-md font-semibold hover:text-red-600"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                      : "text-lg font-semibold hover:text-red-600"
+                  }
                 >
                   Login
                 </NavLink>
                 <NavLink
                   to="/register"
-                  className="text-md font-semibold hover:text-red-600"
+                  className={({ isActive }) =>
+                    isActive
+                      ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
+                      : "text-lg font-semibold hover:text-red-600"
+                  }
                 >
                   Register
                 </NavLink>
