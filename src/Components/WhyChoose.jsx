@@ -6,7 +6,7 @@ import { MdSanitizer } from 'react-icons/md';
 import { GiGloves } from "react-icons/gi";
 const WhyChoose = () => {
   return (
-    <div className="container mx-auto p-8 w-[80%] mx-auto">
+    <div className="container p-8 w-[80%] mx-auto">
       <div className="text-center mb-12">
         <h2 className="text-3xl font-bold text-blue-600">Why Choose Us</h2>
         <p className="text-lg text-gray-600 mt-2">

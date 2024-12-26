@@ -16,6 +16,7 @@ import ServiceDetails from "./Components/ServiceDetails";
 import BookingServices from "./Components/BookingServices";
 import ManageService from "./Components/ManageService";
 import ServiceToDo from "./Components/ServiceToDo";
+import Error from "./Error/Error";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       { path: "/serviceToDo", element: <PrivateRoute><ServiceToDo /></PrivateRoute> },
     ],
   },
+  {
+    path:"*",
+    element:<Error></Error>
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
