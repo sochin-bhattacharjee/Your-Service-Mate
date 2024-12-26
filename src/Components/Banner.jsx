@@ -1,112 +1,140 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { motion } from "framer-motion";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { MdOutlinePlayCircleFilled } from "react-icons/md";
-import { AiOutlineClose } from "react-icons/ai";
+
+import Electrician1 from "../assets/images/Electrician1.jpg";
+import Electrician2 from "../assets/images/Electrician2.jpg";
+import Carpainter1 from "../assets/images/Carpainter1.jpg";
+import Carpainter2 from "../assets/images/Carpainter2.jpg";
+import Painter1 from "../assets/images/Painter1.jpg";
+import Painter2 from "../assets/images/Painter2.jpg";
+import Plumber1 from "../assets/images/Plumber1.jpg";
+import Plumber2 from "../assets/images/Plumber2.jpg";
 
 const Banner = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentTrailer, setCurrentTrailer] = useState("");
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const slides = [
     {
-      image: "https://pbs.twimg.com/media/GdyX3P3a8AAghJq?format=jpg&name=large",
-      trailer: "https://www.youtube.com/embed/1FwI5RMbIcI?si=8WBEP0aT48PsT0sY",
+      image1: Electrician1,
+      image2: Electrician2,
+      title: "Electrician Services",
+      description: "Reliable and affordable electrician services at your doorstep.",
     },
     {
-      image: "https://i.ytimg.com/vi/tPlRgVCeBT8/maxresdefault.jpg",
-      trailer: "https://www.youtube.com/embed/Zm3_ymWT-Rc?si=1o9AZsZCJ_1n5ViY",
+      image1: Carpainter1,
+      image2: Carpainter2,
+      title: "Carpentry Services",
+      description: "High-quality carpentry services tailored to your needs.",
     },
     {
-      image: "https://i.ytimg.com/vi/sGWlxJD0teY/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLCuGe2Z18LJSGwHn2vbamFbUwhPwQ",
-      trailer: "https://www.youtube.com/embed/sGWlxJD0teY",
+      image1: Painter1,
+      image2: Painter2,
+      title: "Painting Services",
+      description: "Transform your space with our expert painting services.",
     },
     {
-      image: "https://live.staticflickr.com/276/32066676951_a984e3f67c_b.jpg",
-      trailer: "https://www.youtube.com/embed/udAlOSn4yFo?si=7wxPl5MNSX-RRdDh",
+      image1: Plumber1,
+      image2: Plumber2,
+      title: "Plumbing Services",
+      description: "Experienced plumbers available for all your needs.",
     },
   ];
 
-  const handleWatchTrailer = (trailer) => {
-    setCurrentTrailer(trailer);
-    setIsModalOpen(true);
+  const handleSlideChange = (swiper) => {
+    setCurrentSlideIndex(swiper.realIndex); 
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setCurrentTrailer("");
-  };
-
-  const handleOutsideClick = (e) => {
-    if (e.target.id === "modal-overlay") {
-      closeModal();
-    }
+  const letterAnimation = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 10 },
   };
 
   return (
-    <div className="w-full h-[210px] md:h-[300px] lg:h-[450px] xl:h-[500px] 2xl:h-[600px] relative">
+    <div className="w-full h-auto py-8 px-4">
       <Swiper
-        style={{
-          "--swiper-navigation-color": "#fff",
-          "--swiper-pagination-color": "#fff",
-        }}
         modules={[Navigation, Pagination, Autoplay]}
-        navigation={true}
+        navigation
         pagination={{ clickable: true }}
-        autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 4000 }}
         loop={true}
         className="h-full"
+        onSlideChange={handleSlideChange}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative">
-              <img
-                src={slide.image}
-                alt={`Slide ${index + 1}`}
-                className="w-full h-[210px] md:h-[300px] lg:h-[450px] xl:h-[500px] 2xl:h-[700px]"
-              />
-              <div className="absolute bottom-4 lg:bottom-10 2xl:bottom-36 left-4 lg:left-10 text-white z-50">
-                <button
-                  onClick={() => handleWatchTrailer(slide.trailer)}
-                  className="bg-red-600 px-5 py-2 md:py-3 rounded-md flex items-center font-medium gap-1 shadow-lg hover:bg-red-700 transition-all"
+            <div className="flex flex-col md:flex-row items-center justify-between gap-8 bg-gray-100 p-14 lg:p-24 py-40 rounded-lg shadow-lg">
+              <motion.div
+                className="text-left max-w-md"
+                key={currentSlideIndex === index ? "current" : "hidden"}
+              >
+                <motion.h2
+                  className="text-4xl font-bold mb-4 text-blue-600"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={letterAnimation}
+                  transition={{
+                    staggerChildren: 0.05,
+                  }}
                 >
-                  <MdOutlinePlayCircleFilled className="text-xl md:text-3xl" />
-                  Watch Trailer
-                </button>
+                  {slide.title.split("").map((char, i) => (
+                    <motion.span
+                      key={i}
+                      variants={letterAnimation}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </motion.h2>
+                <motion.p
+                  className="text-gray-700 text-sm"
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  variants={letterAnimation}
+                  transition={{
+                    staggerChildren: 0.03,
+                  }}
+                >
+                  {slide.description.split("").map((char, i) => (
+                    <motion.span
+                      key={i}
+                      variants={letterAnimation}
+                    >
+                      {char}
+                    </motion.span>
+                  ))}
+                </motion.p>
+              </motion.div>
+
+              <div className="flex gap-4">
+                {[slide.image1, slide.image2].map((image, i) => (
+                  <motion.img
+                    key={i}
+                    src={image}
+                    alt={`Slide ${index + 1} - Image ${i + 1}`}
+                    className="w-72 h-72 rounded-bl-3xl rounded-tr-3xl border-l-4 border-b-4 border-blue-300 rounded-br-lg rounded-tl-lg object-cover shadow-md"
+                    animate={{
+                      y: [0, -10, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      repeatType: "loop",
+                    }}
+                  />
+                ))}
               </div>
             </div>
           </SwiperSlide>
         ))}
       </Swiper>
-
-      {isModalOpen && (
-        <div
-          id="modal-overlay"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-          onClick={handleOutsideClick}
-        >
-          <div className="relative bg-white p-4 rounded-lg shadow-lg w-full max-w-4xl">
-            <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-              <iframe
-                src={currentTrailer}
-                className="absolute top-0 left-0 w-full h-full"
-                frameBorder="0"
-                allow="autoplay; fullscreen"
-                title="Trailer"
-              ></iframe>
-            </div>
-            <button
-              onClick={closeModal}
-              className="absolute top-2 right-2 text-black bg-white rounded-full p-1"
-            >
-              <AiOutlineClose className="text-2xl" />
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

@@ -2,10 +2,14 @@ import { createContext, useEffect, useState } from "react";
 import { auth } from './../firebase/firebase.init';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import axios from "axios";
+import useAxiosSecure from "../hooks/useAxiosSecure";
 
 export const AuthContext = createContext(null);
 
 const AuthProvider = ({children}) => {
+
+    const axiosSecure = useAxiosSecure();
+
     const [user , setUser] = useState(null);
     const [loading , setLoading] = useState(true);
     console.log(user)
@@ -43,14 +47,14 @@ const AuthProvider = ({children}) => {
             console.log(currentUser);
             if(currentUser?.email) {
                 const loggedUser = {email: currentUser.email};
-                axios.post('http://localhost:5000/jwt', loggedUser , {withCredentials: true})
+                axiosSecure.post('/jwt', loggedUser)
                 .then(res => {
                     console.log(res.data)
                     setLoading(false);
                 })
             }
             else {
-                axios.post('http://localhost:5000/logout' , {} , {withCredentials: true})
+                axiosSecure.post('/logout' , {} )
                 .then(res => {
                     console.log('logout' , res.data)
                     setLoading(false);})
