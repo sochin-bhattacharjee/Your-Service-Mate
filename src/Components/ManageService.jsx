@@ -4,9 +4,11 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet";
+import { useTheme } from "../context/ThemeContext"; 
 
 const ManageService = () => {
   const { user } = useContext(AuthContext);
+  const { theme } = useTheme();
   const [services, setServices] = useState([]);
   const [editingService, setEditingService] = useState(null);
   const [formData, setFormData] = useState({});
@@ -105,12 +107,16 @@ const ManageService = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
+    <div
+      className={`container mx-auto p-4 sm:p-6 lg:p-8`}
+    >
       <Helmet>
         <title>{user?.displayName} | Manage Services</title>
       </Helmet>
       <motion.h2
-        className="text-3xl font-bold text-center text-blue-600 mb-6"
+        className={`text-3xl font-bold text-center ${
+          theme === "dark" ? "text-blue-400" : "text-blue-600"
+        } mb-6`}
         initial="hidden"
         animate="visible"
         variants={fadeIn}
@@ -130,7 +136,9 @@ const ManageService = () => {
           {services.map((service) => (
             <motion.div
               key={service._id}
-              className="p-4 rounded-lg shadow-md bg-white flex flex-col justify-between"
+              className={`p-4 rounded-lg shadow-md ${
+                theme === "dark" ? "bg-gray-800" : "bg-white"
+              } flex flex-col justify-between`}
               variants={scaleUp}
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
@@ -141,23 +149,45 @@ const ManageService = () => {
                 className="w-full h-40 sm:h-48 md:h-56 object-center object-cover rounded-md mb-4"
               />
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800">
+                <h3
+                  className={`text-xl font-semibold mb-2 ${
+                    theme === "dark" ? "text-gray-200" : "text-gray-800"
+                  }`}
+                >
                   {service.name}
                 </h3>
-                <p className="text-sm text-gray-600 mb-1">Price: ${service.price}</p>
-                <p className="text-sm text-gray-600 mb-1">Area: {service.area}</p>
-                <p className="text-sm text-gray-600">Provider: {service.providerName}</p>
+                <p
+                  className={`text-sm ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  } mb-1`}
+                >
+                  Price: ${service.price}
+                </p>
+                <p
+                  className={`text-sm ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  } mb-1`}
+                >
+                  Area: {service.area}
+                </p>
+                <p
+                  className={`text-sm ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-600"
+                  }`}
+                >
+                  Provider: {service.providerName}
+                </p>
               </div>
               <div className="mt-4 flex justify-between gap-2">
                 <button
                   onClick={() => openEditModal(service)}
-                  className="btn btn-info btn-sm"
+                  className="btn bg-blue-500 hover:bg-blue-600 text-white font-bold"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(service._id)}
-                  className="btn btn-error btn-sm"
+                  className="btn btn-error hover:bg-red-600 text-white font-bold"
                 >
                   Delete
                 </button>
@@ -167,7 +197,9 @@ const ManageService = () => {
         </motion.div>
       ) : (
         <motion.p
-          className="text-center text-gray-900 text-2xl font-semibold"
+          className={`text-center ${
+            theme === "dark" ? "text-gray-200" : "text-gray-900"
+          } text-2xl font-semibold`}
           initial="hidden"
           animate="visible"
           variants={fadeIn}
@@ -184,14 +216,28 @@ const ManageService = () => {
           exit="hidden"
           variants={fadeIn}
         >
-          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl mt-10 relative">
-            <h3 className="text-lg font-bold mb-4">Edit Service</h3>
+          <div
+            className={`bg-white p-6 rounded-lg shadow-lg w-full max-w-2xl mt-10 relative ${
+              theme === "dark" ? "bg-gray-800" : "bg-white"
+            }`}
+          >
+            <h3
+              className={`text-lg font-bold mb-4 ${
+                theme === "dark" ? "text-gray-200" : "text-gray-800"
+              }`}
+            >
+              Edit Service
+            </h3>
             <div className="space-y-4 max-h-[70vh] overflow-y-auto px-4">
               {Object.keys(formData)
                 .filter((key) => key !== "_id")
                 .map((key) => (
                   <div key={key}>
-                    <label className="block font-medium capitalize">
+                    <label
+                      className={`block font-medium capitalize ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-700"
+                      }`}
+                    >
                       {key}
                     </label>
                     <input
@@ -199,7 +245,9 @@ const ManageService = () => {
                       name={key}
                       value={formData[key] || ""}
                       onChange={handleInputChange}
-                      className="input input-bordered w-full"
+                      className={`input input-bordered w-full ${
+                        theme === "dark" ? "input-dark" : "input-light"
+                      }`}
                     />
                   </div>
                 ))}

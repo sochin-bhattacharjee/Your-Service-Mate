@@ -273,7 +273,7 @@ const Navbar = () => {
             animate="visible"
             exit="hidden"
             variants={menuVariants}
-            className="absolute flex flex-col gap-4 bg-gray-400 p-4 rounded-lg lg:hidden z-50"
+            className="absolute flex flex-col gap-4 bg-gray-500 p-4 rounded-lg lg:hidden z-50"
           >
             <NavLink
               to="/"

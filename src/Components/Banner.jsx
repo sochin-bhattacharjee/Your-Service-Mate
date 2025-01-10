@@ -14,9 +14,11 @@ import Painter1 from "../assets/images/Painter1.jpg";
 import Painter2 from "../assets/images/Painter2.jpg";
 import Plumber1 from "../assets/images/Plumber1.jpg";
 import Plumber2 from "../assets/images/Plumber2.jpg";
+import { useTheme } from "../context/ThemeContext";
 
 const Banner = () => {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const { theme } = useTheme();
 
   const slides = [
     {
@@ -68,14 +70,22 @@ const Banner = () => {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 bg-gray-100 p-8 md:p-14 xl:p-20 rounded-lg shadow-lg w-full">
+            <div
+              className={`flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 ${
+                theme === "dark"
+                  ? "bg-gray-800 text-gray-300"
+                  : "bg-gray-100 text-gray-700"
+              } p-8 md:p-14 xl:p-20 rounded-lg shadow-lg w-full`}
+            >
               {/* Text Section */}
               <motion.div
                 className="text-left w-full md:max-w-sm"
                 key={currentSlideIndex === index ? "current" : "hidden"}
               >
                 <motion.h2
-                  className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 text-blue-600"
+                  className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-4 ${
+                    theme === "dark" ? "text-blue-400" : "text-blue-600"
+                  }`}
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -91,7 +101,7 @@ const Banner = () => {
                   ))}
                 </motion.h2>
                 <motion.p
-                  className="text-gray-700 text-sm sm:text-base"
+                  className="text-sm sm:text-base"
                   initial="hidden"
                   animate="visible"
                   exit="exit"
@@ -115,7 +125,9 @@ const Banner = () => {
                     key={i}
                     src={image}
                     alt={`Slide ${index + 1} - Image ${i + 1}`}
-                    className="w-44 sm:w-56 md:w-64 lg:w-72 h-44 sm:h-56 md:h-64 lg:h-72 rounded-bl-3xl rounded-tr-3xl border-l-4 border-b-4 border-blue-300 rounded-br-lg rounded-tl-lg object-cover shadow-md"
+                    className={`w-44 sm:w-56 md:w-64 lg:w-72 h-44 sm:h-56 md:h-64 lg:h-72 rounded-bl-3xl rounded-tr-3xl border-l-4 border-b-4 ${
+                      theme === "dark" ? "border-blue-600" : "border-blue-300"
+                    } rounded-br-lg rounded-tl-lg object-cover shadow-md`}
                     animate={{
                       y: [0, -10, 0],
                     }}

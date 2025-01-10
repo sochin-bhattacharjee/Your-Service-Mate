@@ -24,7 +24,7 @@ const ServiceCard = ({ service }) => {
             Price: ${price}
           </p>
            {/* Description */}
-        <p className="text-gray-700 text-sm line-clamp-3">
+        <p className="text-gray-500 text-sm line-clamp-3">
           {description}
         </p>
         </div>

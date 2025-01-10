@@ -75,7 +75,7 @@ const ServiceToDo = () => {
                 />
               </div>
 
-              <div className="flex flex-col md:flex-row justify-between gap-2 sm:gap-0 sm:items-center w-full">
+              <div className="flex flex-col sm:flex-row justify-between gap-2 sm:gap-0 sm:items-center w-full">
               <div className="flex-grow">
                 <h3 className="text-lg font-semibold">{service.serviceName}</h3>
                 <p className="text-sm">

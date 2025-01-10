@@ -156,7 +156,7 @@ const AllServices = () => {
       </div>
 
       <motion.div
-        className="px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1 gap-6 mt-2 md:mt-4"
+        className="px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1 gap-6 mt-3 md:mt-20"
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -167,12 +167,12 @@ const AllServices = () => {
           ))
         ) : (
           <motion.p
-            className="text-center text-gray-500"
+            className="text-center w-full col-span-4 text-gray-500"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="loading loading-spinner loading-lg"></span>
+            <span className="loading loading-spinner loading-lg mx-auto"></span>
           </motion.p>
         )}
       </motion.div>
