@@ -91,7 +91,7 @@ const Navbar = () => {
           <NavLink
             to="/"
             className={`text-2xl font-bold flex items-center ${
-              theme === "dark" ? "text-red-400" : "text-red-600"
+              theme === "dark" ? "text-blue-500" : "text-blue-600"
             }`}
           >
             <img
@@ -108,8 +108,8 @@ const Navbar = () => {
             to="/"
             className={({ isActive }) =>
               isActive
-                ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
-                : "text-lg font-semibold hover:text-red-600"
+                ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                : "text-lg font-semibold hover:text-blue-600"
             }
           >
             Service
@@ -117,7 +117,7 @@ const Navbar = () => {
 
           <button
             onClick={toggleDashboardDropdown}
-            className="text-lg font-semibold hover:text-red-600 flex items-center gap-1"
+            className="text-lg font-semibold hover:text-blue-500 flex items-center gap-1"
           >
             Dashboard
             {isDropdownOpen ? <FaCaretUp /> : <FaCaretDown />}
@@ -140,8 +140,8 @@ const Navbar = () => {
                       to="/allServices"
                       className={({ isActive }) =>
                         isActive
-                          ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
-                          : "text-lg font-semibold hover:text-red-600"
+                          ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                          : "text-lg font-semibold hover:text-blue-600"
                       }
                     >
                       All Services
@@ -154,8 +154,8 @@ const Navbar = () => {
                           to="/addService"
                           className={({ isActive }) =>
                             isActive
-                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
-                              : "text-lg font-semibold hover:text-red-600"
+                              ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-blue-600"
                           }
                         >
                           Add Service
@@ -166,8 +166,8 @@ const Navbar = () => {
                           to="/manageService"
                           className={({ isActive }) =>
                             isActive
-                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
-                              : "text-lg font-semibold hover:text-red-600"
+                              ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-blue-600"
                           }
                         >
                           Manage Service
@@ -178,8 +178,8 @@ const Navbar = () => {
                           to="/bookedServices"
                           className={({ isActive }) =>
                             isActive
-                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
-                              : "text-lg font-semibold hover:text-red-600"
+                              ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-blue-600"
                           }
                         >
                           Booked Services
@@ -190,8 +190,8 @@ const Navbar = () => {
                           to="/serviceToDo"
                           className={({ isActive }) =>
                             isActive
-                              ? "text-red-600 border-b-2 border-red-600 text-lg font-semibold"
-                              : "text-lg font-semibold hover:text-red-600"
+                              ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                              : "text-lg font-semibold hover:text-blue-600"
                           }
                         >
                           Service To Do
@@ -207,7 +207,7 @@ const Navbar = () => {
           {user ? (
             <button
               onClick={handleLogout}
-              className="text-lg font-semibold hover:text-red-600"
+              className="text-lg font-semibold hover:text-blue-600"
             >
               Logout
             </button>
@@ -215,13 +215,21 @@ const Navbar = () => {
             <>
               <NavLink
                 to="/login"
-                className="text-lg font-semibold hover:text-red-600"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                    : "text-lg font-semibold hover:text-blue-600"
+                }
               >
                 Login
               </NavLink>
               <NavLink
                 to="/register"
-                className="text-lg font-semibold hover:text-red-600"
+                className={({ isActive }) =>
+                  isActive
+                    ? "text-blue-500 border-b-2 border-blue-500 text-lg font-semibold"
+                    : "text-lg font-semibold hover:text-blue-600"
+                }
               >
                 Register
               </NavLink>
