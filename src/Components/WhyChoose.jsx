@@ -14,7 +14,7 @@ const WhyChoose = () => {
       <div className="text-center mb-12">
         <h2
           className={`text-3xl font-bold ${
-            theme === "dark" ? "text-blue-400" : "text-blue-600"
+            theme === "dark" ? "text-gray-400" : "text-black"
           }`}
         >
           Why Choose Us

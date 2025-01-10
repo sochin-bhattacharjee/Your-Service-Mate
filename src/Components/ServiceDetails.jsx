@@ -6,11 +6,13 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from "../provider/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet";
+import { useTheme } from "../context/ThemeContext";
 
 const ServiceDetails = () => {
   const { user } = useContext(AuthContext);
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
+  const { theme } = useTheme(); // Access theme context
 
   const fetchServiceDetails = async (id) => {
     try {
@@ -73,13 +75,11 @@ const ServiceDetails = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log(response.data)
 
       if (response.data) {
         Swal.fire("Success!", "Your booking is confirmed!", "success");
         setShowModal(false);
-      } 
-      else {
+      } else {
         Swal.fire("Error!", "Booking failed. Please try again.", "error");
       }
     } catch (error) {
@@ -101,35 +101,56 @@ const ServiceDetails = () => {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <div
+      className={`container mx-auto p-6`}
+    >
       <Helmet>
         <title>{service.name} Details</title>
       </Helmet>
-      <div className="bg-white shadow-lg rounded-lg p-6 transform transition-all hover:shadow-xl">
+      <div
+        className={`shadow-lg rounded-lg p-6 transform transition-all hover:shadow-xl ${
+          theme === "dark" ? "bg-gray-800" : "bg-white"
+        }`}
+      >
         <img
           src={service.imageUrl}
           alt={service.name}
           className="w-full h-[400px] md:h-[600px] object-cover rounded-lg"
         />
-        <h2 className="text-3xl font-semibold mt-4 text-blue-700">{service.name}</h2>
-        <p className="mt-2 text-gray-700">{service.description}</p>
+        <h2
+          className={`text-3xl font-semibold mt-4 ${
+            theme === "dark" ? "text-blue-300" : "text-blue-700"
+          }`}
+        >
+          {service.name}
+        </h2>
+        <p className="mt-2">{service.description}</p>
         <div className="flex items-center mt-4">
           <img
             src={service.providerImage}
             alt={service.providerName}
-            className="w-12 h-12 rounded-full object-cover object-center border-2 border-blue-950 mr-3"
+            className="w-12 h-12 rounded-full object-cover object-center border-2 mr-3"
+            style={{ borderColor: theme === "dark" ? "#1E40AF" : "#1F2937" }}
           />
           <div>
-            <p className="text-xl font-semibold text-gray-900">{service.providerName}</p>
-            <p className="text-sm text-gray-500">{service.providerEmail}</p>
+            <p className="text-xl font-semibold">{service.providerName}</p>
+            <p className="text-sm">{service.providerEmail}</p>
           </div>
         </div>
-        <p className="mt-4 text-lg font-medium text-green-600">Location: {service.area}</p>
+        <p className="mt-4 text-lg font-medium text-green-600">
+          Location: {service.area}
+        </p>
         <div className="flex justify-between items-center mt-6">
-          <p className="text-lg md:text-2xl font-bold text-orange-500">Price: ${service.price}</p>
+          <p className="text-lg md:text-2xl font-bold text-orange-500">
+            Price: ${service.price}
+          </p>
           <button
             onClick={handleBookNow}
-            className="px-3 sm:px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all"
+            className={`px-3 sm:px-6 py-3 rounded-lg transition-all ${
+              theme === "dark"
+                ? "bg-blue-600 hover:bg-blue-700 text-white"
+                : "bg-blue-500 hover:bg-blue-600 text-white"
+            }`}
           >
             Book Now
           </button>
@@ -137,9 +158,19 @@ const ServiceDetails = () => {
       </div>
 
       {showModal && (
-        <div className="fixed mt-10 inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-y-auto">
-          <div className="bg-white p-8 rounded-md shadow-xl sm:w-[600px] max-h-[80vh] overflow-y-auto relative transform transition-all hover:scale-105">
-            <h3 className="text-2xl font-bold text-blue-700 mb-6">Book Service</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center overflow-y-auto">
+          <div
+            className={`p-8 rounded-md shadow-xl sm:w-[600px] max-h-[80vh] overflow-y-auto relative transform transition-all ${
+              theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"
+            }`}
+          >
+            <h3
+              className={`text-2xl font-bold mb-6 ${
+                theme === "dark" ? "text-blue-300" : "text-blue-700"
+              }`}
+            >
+              Book Service
+            </h3>
             <form
               onSubmit={handleSubmit((data) => {
                 if (validateDate(data.serviceTakingDate)) {
@@ -148,62 +179,74 @@ const ServiceDetails = () => {
               })}
             >
               <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Service ID</label>
+                <label className="block text-sm font-semibold">Service ID</label>
                 <input
                   type="text"
                   value={service._id}
                   readOnly
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border p-3 rounded-lg focus:outline-none"
                 />
               </div>
               <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Service Name</label>
+                <label className="block text-sm font-semibold">Service Name</label>
                 <input
                   type="text"
                   value={service.name}
                   readOnly
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border p-3 rounded-lg focus:outline-none"
                 />
               </div>
               <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Your Email</label>
+                <label className="block text-sm font-semibold">Your Email</label>
                 <input
                   type="text"
                   value={user?.email || "guest@example.com"}
                   readOnly
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border p-3 rounded-lg focus:outline-none"
                 />
               </div>
               <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Service Taking Date</label>
+                <label className="block text-sm font-semibold">
+                  Service Taking Date
+                </label>
                 <input
                   type="date"
                   {...register("serviceTakingDate", { required: "Date is required" })}
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border p-3 rounded-lg focus:outline-none"
                 />
                 {errors.serviceTakingDate && (
                   <p className="text-red-500 text-sm">{errors.serviceTakingDate.message}</p>
                 )}
               </div>
               <div className="mt-4">
-                <label className="block text-sm font-semibold text-gray-800">Special Instructions</label>
+                <label className="block text-sm font-semibold">
+                  Special Instructions
+                </label>
                 <textarea
                   {...register("specialInstruction")}
                   rows="4"
-                  className="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full border p-3 rounded-lg focus:outline-none"
                 />
               </div>
               <div className="mt-6 flex justify-between gap-2 items-center">
                 <button
                   type="submit"
-                  className="px-3 md:px-6 py-3 bg-blue-600 text-sm md:text-base text-white rounded-lg hover:bg-blue-700 transition-all"
+                  className={`px-3 md:px-6 py-3 rounded-lg transition-all ${
+                    theme === "dark"
+                      ? "bg-blue-600 hover:bg-blue-700 text-white"
+                      : "bg-blue-500 hover:bg-blue-600 text-white"
+                  }`}
                 >
                   Confirm Booking
                 </button>
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-6 py-3 bg-red-600 text-sm md:text-base text-white rounded-lg hover:bg-red-700 transition-all"
+                  className={`px-6 py-3 rounded-lg transition-all ${
+                    theme === "dark"
+                      ? "bg-red-600 hover:bg-red-700 text-white"
+                      : "bg-red-500 hover:bg-red-600 text-white"
+                  }`}
                 >
                   Cancel
                 </button>

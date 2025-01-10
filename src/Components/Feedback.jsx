@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useTheme } from "../context/ThemeContext";
+import Swal from "sweetalert2";
 
 const Feedback = () => {
   const { theme } = useTheme();
@@ -19,12 +20,27 @@ const Feedback = () => {
     };
 
     if (!feedback.name || !feedback.email || !feedback.message) {
-      alert("Please fill out all fields!");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please fill out all fields!",
+      });
       return;
     }
 
+    // Simulate submission (you can replace this with API call logic)
     console.log("Feedback submitted:", feedback);
-    alert("Thank you for your feedback!");
+
+    // Display success message
+    Swal.fire({
+      icon: "success",
+      title: "Thank you!",
+      text: "Your feedback has been submitted successfully.",
+      showConfirmButton: false,
+      timer: 2000,
+    });
+
+    // Reset form
     e.target.reset();
     setRating(0);
   };

@@ -67,7 +67,7 @@ const PopularServices = () => {
               <motion.div
                 key={service._id}
                 variants={cardAnimation}
-                whileHover={{ scale: 1.05 }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <ServiceCard service={service} />

@@ -44,7 +44,7 @@ const BookingServices = () => {
       <Helmet>
         <title>{user?.displayName} | Booked Services</title>
       </Helmet>
-      <h1 className={`text-3xl font-semibold ${theme === "dark" ? "text-blue-400" : "text-blue-700"}`}>Booked Services</h1>
+      <h1 className={`text-3xl font-semibold mb-3 ${theme === "dark" ? "text-blue-400" : "text-blue-700"}`}>Booked Services</h1>
       {bookedServices.length > 0 ? (
         <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6${theme === "dark" ? "bg-gray-800 text-gray-300" : "bg-gray-100 text-gray-900"}`}>
           {bookedServices.map((booking) => (
