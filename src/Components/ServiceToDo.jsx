@@ -62,12 +62,12 @@ const ServiceToDo = () => {
           {bookedServices.map((service) => (
             <div
               key={service._id}
-              className={`flex flex-col md:flex-row items-start md:items-center gap-4 p-4 rounded-lg shadow-md ${getStatusStyles(
+              className={`flex flex-col sm:flex-row items-center gap-4 p-4 rounded-lg shadow-md ${getStatusStyles(
                 service.serviceStatus
               )}`}
             >
 
-              <div className="w-16 h-16 flex-shrink-0">
+              <div className="w-full h-36 sm:w-16 sm:h-16 flex-shrink-0">
                 <img
                   src={service.serviceImage || "/placeholder.png"}
                   alt={service.serviceName}
@@ -75,6 +75,7 @@ const ServiceToDo = () => {
                 />
               </div>
 
+              <div className="flex flex-col md:flex-row justify-between gap-2 sm:gap-0 sm:items-center w-full">
               <div className="flex-grow">
                 <h3 className="text-lg font-semibold">{service.serviceName}</h3>
                 <p className="text-sm">
@@ -86,7 +87,7 @@ const ServiceToDo = () => {
                 </p>
               </div>
 
-              <div className="flex justify-center items-center md:self-start">
+              <div>
                 <select
                   value={service.serviceStatus}
                   onChange={(e) => handleStatusChange(service._id, e.target.value)}
@@ -96,6 +97,7 @@ const ServiceToDo = () => {
                   <option value="working">Working</option>
                   <option value="completed">Completed</option>
                 </select>
+              </div>
               </div>
             </div>
           ))}

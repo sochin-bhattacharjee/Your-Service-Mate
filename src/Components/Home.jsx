@@ -3,6 +3,7 @@ import Banner from "./Banner";
 import PopularServices from "./PopularServices";
 import Feedback from "./Feedback";
 import WhyChoose from "./WhyChoose";
+import ContactMe from "./ContactMe";
 
 
 const Home = () => {
@@ -22,6 +23,9 @@ const Home = () => {
             </div>
             <div>
                 <Feedback></Feedback>
+            </div>
+            <div>
+                <ContactMe></ContactMe>
             </div>
         </div>
     );

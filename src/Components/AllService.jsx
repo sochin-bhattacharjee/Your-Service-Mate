@@ -75,6 +75,18 @@ const AllServices = () => {
     updateVisiblePages(page);
   };
 
+  const handleSort = (type) => {
+    let sortedServices;
+    if (type === "highest") {
+      sortedServices = [...services].sort((a, b) => b.price - a.price);
+    } else if (type === "lowest") {
+      sortedServices = [...services].sort((a, b) => a.price - b.price);
+    } else {
+      sortedServices = [...services];
+    }
+    setFilteredServices(sortedServices);
+  };
+
   useEffect(() => {
     updateVisiblePages(currentPage);
   }, [totalPages, currentPage]);
@@ -92,7 +104,7 @@ const AllServices = () => {
       </Helmet>
       {/* Search Box */}
       <motion.div
-        className="sticky top-16 z-10 bg-blue-600 bg-opacity-70 backdrop-blur-md py-4 px-6 rounded-sm shadow-md"
+        className="sticky top-16 z-30 bg-blue-600 bg-opacity-70 backdrop-blur-md py-2 sm:py-4 px-6 rounded-sm shadow-md"
         initial={{ y: -50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
@@ -118,8 +130,33 @@ const AllServices = () => {
         </div>
       </motion.div>
 
+      {/* Sort Dropdown */}
+      <div className="dropdown w-[90%] md:w-[98%] xl:w-[87%] mx-auto flex justify-end mt-2 md:mt-4 z-20 md:fixed">
+        <div tabIndex={0} className="btn font-bold text-white bg-blue-500 hover:bg-blue-600">
+          Sort Service
+        </div>
+        <ul
+          tabIndex={0}
+          className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-12 w-52 p-2 shadow"
+        >
+          <li>
+            <button onClick={() => handleSort("normal")}>Normal</button>
+          </li>
+          <li>
+            <button onClick={() => handleSort("highest")}>
+              Highest Price to Lowest
+            </button>
+          </li>
+          <li>
+            <button onClick={() => handleSort("lowest")}>
+              Lowest Price to Highest
+            </button>
+          </li>
+        </ul>
+      </div>
+
       <motion.div
-        className=" p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1 gap-6"
+        className="px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1 gap-6 mt-2 md:mt-4"
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
@@ -135,7 +172,7 @@ const AllServices = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            No services found matching "{searchQuery}"
+            <span className="loading loading-spinner loading-lg"></span>
           </motion.p>
         )}
       </motion.div>
