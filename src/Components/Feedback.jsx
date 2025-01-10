@@ -36,7 +36,7 @@ const Feedback = () => {
       <h2 className="text-3xl font-bold mb-6 text-center">We Value Your Feedback</h2>
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-lg xl:max-w-4xl bg-opacity-90 rounded-lg shadow-lg p-6 lg:p-8"
+        className="w-11/12 md:max-w-lg lg:max-w-2xl xl:max-w-4xl bg-opacity-90 rounded-lg shadow-lg p-6 lg:p-8"
         style={{
           backgroundColor: theme === "dark" ? "#1F2937" : "#FFFFFF",
         }}

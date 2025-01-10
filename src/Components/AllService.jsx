@@ -81,7 +81,7 @@ const AllServices = () => {
 
   return (
     <motion.div
-      className="container mx-auto p-6"
+      className="container mx-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -97,9 +97,9 @@ const AllServices = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-row justify-between items-center">
           <motion.h2
-            className="text-3xl font-bold text-white mb-4 md:mb-0"
+            className="text-lg md:text-3xl font-bold text-white"
             initial={{ scale: 0.9 }}
             animate={{ scale: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
@@ -112,14 +112,14 @@ const AllServices = () => {
               placeholder="Search services by name..."
               value={searchQuery}
               onChange={handleSearch}
-              className="input input-bordered w-full max-w-md"
+              className="input input-bordered w-full max-w-[150px] md:max-w-md"
             />
           </div>
         </div>
       </motion.div>
 
       <motion.div
-        className="space-y-6 mt-6"
+        className=" p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1 gap-6"
         initial={{ scale: 0.95, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeInOut" }}

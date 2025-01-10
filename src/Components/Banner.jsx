@@ -56,7 +56,7 @@ const Banner = () => {
   };
 
   return (
-    <div className="w-full h-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="w-full h-auto py-8">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         navigation
@@ -68,7 +68,7 @@ const Banner = () => {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 bg-gray-100 p-8 md:p-14 xl:p-20 rounded-lg shadow-lg">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8 bg-gray-100 p-8 md:p-14 xl:p-20 rounded-lg shadow-lg w-full">
               {/* Text Section */}
               <motion.div
                 className="text-left w-full md:max-w-sm"

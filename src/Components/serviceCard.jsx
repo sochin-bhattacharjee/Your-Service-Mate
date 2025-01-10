@@ -4,9 +4,9 @@ const ServiceCard = ({ service }) => {
   const { imageUrl, name, price, description, area } = service;
 
   return (
-    <div className="card card-side max-h-80 bg-base-100 shadow-lg border border-gray-200 rounded-lg overflow-hidden">
+    <div className="card xl:card-side xl:max-h-80 bg-base-100 shadow-lg border border-gray-200 rounded-lg overflow-hidden">
       {/* Left: Service Image */}
-      <div className="w-1/2">
+      <div className="xl:w-1/2">
         <img
           src={imageUrl}
           alt={name}
@@ -15,22 +15,22 @@ const ServiceCard = ({ service }) => {
       </div>
 
       {/* Right: Service Details */}
-      <div className="w-1/2 p-6 flex flex-col justify-between">
+      <div className="xl:w-1/2 p-6 flex flex-col justify-between">
         {/* Title and Price */}
-        <div>
+        <div className="space-y-1 lg:space-y-2">
           <h2 className="card-title text-xl font-bold text-blue-600">{name}</h2>
-          <p className="text-gray-500 text-base mt-1">Area: <span className="text-rose-400">{area}</span></p>
-          <p className="text-lg font-semibold text-green-600 mt-2">
+          <p className="text-gray-500 text-base">Area: <span className="text-rose-400">{area}</span></p>
+          <p className="text-lg font-semibold text-green-600">
             Price: ${price}
           </p>
            {/* Description */}
-        <p className="text-gray-700 text-sm my-4 line-clamp-3">
+        <p className="text-gray-700 text-sm line-clamp-3">
           {description}
         </p>
         </div>
 
         {/* View Details Button */}
-        <div className="card-actions justify-end">
+        <div className="card-actions justify-end mt-3 sm:mt-5">
           <Link onClick={() => window.scrollTo(0, 0)} to={`/details/${service._id}`} className="btn btn-primary w-full">
             View Details
           </Link>

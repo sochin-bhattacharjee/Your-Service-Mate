@@ -13,8 +13,8 @@ const WhyChoose = () => {
           Because we care about your safety...
         </p>
       </div>
-      <div className='flex flex-col-reverse lg:flex-row gap-5'>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:w-[40%]">
+      <div className='flex flex-col-reverse xl:flex-row gap-5'>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 xl:w-[40%]">
         {/* Card 1 */}
         <motion.div
           className="card shadow-lg p-6 border rounded-lg hover:shadow-xl transition-shadow"
@@ -55,11 +55,11 @@ const WhyChoose = () => {
           <p className="text-gray-600 text-sm">We ensure everyone wears gloves for extra protection.</p>
         </motion.div>
       </div>
-      <div className="mt-12 text-center lg:w-[60%]">
+      <div className=" text-center shadow-md rounded-lg xl:w-[60%]">
         <img
           src={service}
           alt="Safety Measures"
-          className="mx-auto w-full md:w-2/3"
+          className="mx-auto w-full rounded-lg"
         />
       </div>
       </div>      
