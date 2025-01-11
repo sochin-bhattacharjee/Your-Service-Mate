@@ -99,7 +99,7 @@ const Navbar = () => {
               src={logo}
               alt="Your Service Mate Logo"
             />
-            <span className="text-xs sm:text-lg">Your Service Mate</span>
+            <span className="text-xs sm:text-lg md:text-xl lg:text-2xl">Your Service Mate</span>
           </NavLink>
         </div>
 

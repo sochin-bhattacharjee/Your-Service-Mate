@@ -93,7 +93,7 @@ const AllServices = () => {
 
   return (
     <motion.div
-      className="container mx-auto"
+      className="container mx-auto "
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -167,7 +167,7 @@ const AllServices = () => {
           ))
         ) : (
           <motion.p
-            className="text-center w-full col-span-4 text-gray-500"
+            className="text-center w-full col-span-4 text-gray-500 flex"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}

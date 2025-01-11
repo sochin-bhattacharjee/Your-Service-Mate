@@ -7,11 +7,14 @@ import { useNavigate } from "react-router-dom";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { Helmet } from "react-helmet";
 import { motion } from "framer-motion";
+import { useTheme } from "../context/ThemeContext";
 
 const AddService = () => {
   const { user } = useContext(AuthContext);
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const axiosSecure = useAxiosSecure();
+
   const {
     register,
     handleSubmit,
@@ -50,7 +53,6 @@ const AddService = () => {
           navigate("/allServices");
         });
       } else {
-        console.error("Unexpected response:", response);
         Swal.fire({
           title: "Error!",
           text: `Unexpected status: ${response.status}`,
@@ -58,21 +60,11 @@ const AddService = () => {
         });
       }
     } catch (error) {
-      if (error.response) {
-        console.error("Error from backend:", error.response);
-        Swal.fire({
-          title: "Error!",
-          text: error.response.data?.message || "Failed to add service. Try again.",
-          icon: "error",
-        });
-      } else {
-        console.error("Error during request:", error);
-        Swal.fire({
-          title: "Error!",
-          text: "An unexpected error occurred. Try again.",
-          icon: "error",
-        });
-      }
+      Swal.fire({
+        title: "Error!",
+        text: error.response?.data?.message || "Failed to add service. Try again.",
+        icon: "error",
+      });
     }
   };
 
@@ -85,9 +77,15 @@ const AddService = () => {
     hover: { scale: 1.05, transition: { yoyo: Infinity, duration: 0.3 } },
   };
 
+  const themeClasses = theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-gray-800";
+  const inputThemeClasses =
+    theme === "dark"
+      ? "bg-gray-700 border-gray-600 text-white"
+      : "bg-white border-gray-300 text-gray-800";
+
   return (
     <motion.div
-      className="container mx-auto p-8"
+      className={`container mx-auto p-8`}
       initial="hidden"
       animate="visible"
       variants={formVariants}
@@ -96,7 +94,9 @@ const AddService = () => {
         <title>{`${user?.displayName}`} | Add Service</title>
       </Helmet>
       <motion.h2
-        className="text-3xl font-semibold text-center text-blue-600 mb-6"
+        className={`text-3xl font-semibold text-center ${
+          theme === "dark" ? "text-blue-300" : "text-blue-600"
+        } mb-6`}
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -105,46 +105,48 @@ const AddService = () => {
       </motion.h2>
       <motion.form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-xl border border-gray-200"
+        className={`max-w-2xl mx-auto p-8 rounded-lg shadow-xl border ${
+          theme === "dark" ? "border-gray-700" : "border-gray-200"
+        } ${themeClasses}`}
         variants={formVariants}
       >
         {/* Image URL */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="imageUrl">
+          <label className="block font-medium mb-2" htmlFor="imageUrl">
             Image URL
           </label>
           <input
             {...register("imageUrl", { required: "Image URL is required" })}
             type="text"
             id="imageUrl"
-            className="input input-bordered w-full"
+            className={`input input-bordered w-full ${inputThemeClasses}`}
             placeholder="Enter image URL"
           />
           {errors.imageUrl && (
-            <p className="text-red-600 text-sm">{errors.imageUrl.message}</p>
+            <p className="text-red-500 text-sm">{errors.imageUrl.message}</p>
           )}
         </div>
 
         {/* Service Name */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="name">
+          <label className="block font-medium mb-2" htmlFor="name">
             Service Name
           </label>
           <input
             {...register("name", { required: "Service Name is required" })}
             type="text"
             id="name"
-            className="input input-bordered w-full"
+            className={`input input-bordered w-full ${inputThemeClasses}`}
             placeholder="Enter service name"
           />
           {errors.name && (
-            <p className="text-red-600 text-sm">{errors.name.message}</p>
+            <p className="text-red-500 text-sm">{errors.name.message}</p>
           )}
         </div>
 
         {/* Price */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="price">
+          <label className="block font-medium mb-2" htmlFor="price">
             Price
           </label>
           <input
@@ -154,34 +156,34 @@ const AddService = () => {
             })}
             type="number"
             id="price"
-            className="input input-bordered w-full"
+            className={`input input-bordered w-full ${inputThemeClasses}`}
             placeholder="Enter service price"
           />
           {errors.price && (
-            <p className="text-red-600 text-sm">{errors.price.message}</p>
+            <p className="text-red-500 text-sm">{errors.price.message}</p>
           )}
         </div>
 
         {/* Service Area */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="area">
+          <label className="block font-medium mb-2" htmlFor="area">
             Service Area
           </label>
           <input
             {...register("area", { required: "Service Area is required" })}
             type="text"
             id="area"
-            className="input input-bordered w-full"
+            className={`input input-bordered w-full ${inputThemeClasses}`}
             placeholder="Enter service area"
           />
           {errors.area && (
-            <p className="text-red-600 text-sm">{errors.area.message}</p>
+            <p className="text-red-500 text-sm">{errors.area.message}</p>
           )}
         </div>
 
         {/* Description */}
         <div className="mb-6">
-          <label className="block text-gray-700 font-medium mb-2" htmlFor="description">
+          <label className="block font-medium mb-2" htmlFor="description">
             Description
           </label>
           <textarea
@@ -193,12 +195,12 @@ const AddService = () => {
               },
             })}
             id="description"
-            className="textarea textarea-bordered w-full"
+            className={`textarea textarea-bordered w-full ${inputThemeClasses}`}
             rows="5"
             placeholder="Enter service description"
           ></textarea>
           {errors.description && (
-            <p className="text-red-600 text-sm">{errors.description.message}</p>
+            <p className="text-red-500 text-sm">{errors.description.message}</p>
           )}
         </div>
 
@@ -206,7 +208,9 @@ const AddService = () => {
         <div className="text-center">
           <motion.button
             type="submit"
-            className="btn btn-primary w-full"
+            className={`btn w-full ${
+              theme === "dark" ? "bg-blue-600 text-white" : "bg-blue-500 text-white"
+            }`}
             variants={buttonVariants}
             whileHover="hover"
           >
